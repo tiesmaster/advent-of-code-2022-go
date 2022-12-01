@@ -8,6 +8,7 @@ import (
 
 func main() {
 	fmt.Println("most calories (test data): ", findMostCalories(testData))
+	fmt.Println("most calories (data): ", findMostCalories(data))
 }
 
 func findMostCalories(data string) int {

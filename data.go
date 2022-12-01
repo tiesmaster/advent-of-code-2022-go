@@ -1,5 +1,12 @@
 package main
 
+import (
+	_ "embed"
+)
+
+//go:embed data.txt
+var data string
+
 var testData = `1000
 2000
 3000
