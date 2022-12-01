@@ -21,12 +21,9 @@ func findMostCalories(data string) int {
 		if s == "" {
 			max = Max(max, sum)
 			sum = 0
-			
-			fmt.Println("EMPTY")
 		} else {
 			i, _ := strconv.Atoi(s)
 			sum += i
-			fmt.Println(s)
 		}
 	}
 
