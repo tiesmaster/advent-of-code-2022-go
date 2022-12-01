@@ -12,6 +12,7 @@ func main() {
 	fmt.Println("most calories [data]: ", findMostCalories(data))
 
 	fmt.Println("most calories (top 3) [test data]: ", findTop3MostCalories(testData))
+	fmt.Println("most calories (top 3) [data]: ", findTop3MostCalories(data))
 }
 
 func findTop3MostCalories(data string) int {
