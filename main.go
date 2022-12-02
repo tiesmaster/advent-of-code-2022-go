@@ -2,17 +2,22 @@ package main
 
 import (
 	"fmt"
+	"sort"
 	"strconv"
 	"strings"
-	"sort"
+
+	"github.com/tiesmaster/advent-of-code-2022-go/day02"
 )
 
 func main() {
-	fmt.Println("most calories [test data]: ", findMostCalories(testData))
-	fmt.Println("most calories [data]: ", findMostCalories(data))
+	fmt.Println("day 01: most calories [test data]: ", findMostCalories(testData))
+	fmt.Println("day 01: most calories [data]: ", findMostCalories(data))
 
-	fmt.Println("most calories (top 3) [test data]: ", findTop3MostCalories(testData))
-	fmt.Println("most calories (top 3) [data]: ", findTop3MostCalories(data))
+	fmt.Println("day 01: most calories (top 3) [test data]: ", findTop3MostCalories(testData))
+	fmt.Println("day 01: most calories (top 3) [data]: ", findTop3MostCalories(data))
+
+	fmt.Println("day 02: total score [test data]", day02.CalculateTotalScore(day02.TestData))
+	// fmt.Println("day 02: total score [data]", day02.CalculateTotalScore(day02.Data))
 }
 
 func findTop3MostCalories(data string) int {
@@ -31,12 +36,11 @@ func findTop3MostCalories(data string) int {
 		}
 	}
 
-	sort.Slice(totals, func (i, j int) bool {
+	sort.Slice(totals, func(i, j int) bool {
 		return totals[i] > totals[j]
 	})
 
 	top3 := totals[:3]
-	
 
 	return sumTotals(top3)
 }
