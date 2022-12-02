@@ -13,6 +13,17 @@ func CalculateTotalScore(strategyGuide string) int {
 	return total
 }
 
+func CalculateTotalScoreStep2(strategyGuide string) int {
+	parts := strings.Split(strategyGuide, "\n")
+
+	total := 0
+	for _, s := range parts {
+		total += calculateTotalStep2ForLine(s)
+	}
+
+	return total
+}
+
 func calculateTotalForLine(line string) int {
 	opponent := parseShape(line[:1])
 	me := parseShape(line[2:])
@@ -20,6 +31,18 @@ func calculateTotalForLine(line string) int {
 
 	pointsSelected := int(me)
 	pointsOutcome := int(outcome)
+
+	return pointsSelected + pointsOutcome
+}
+
+func calculateTotalStep2ForLine(line string) int {
+	opponent := parseShape(line[:1])
+	desiredOutcome := parseOutcome(line[2:])
+
+	me := calculateShapeToChoose(opponent, desiredOutcome)
+
+	pointsSelected := int(me)
+	pointsOutcome := int(desiredOutcome)
 
 	return pointsSelected + pointsOutcome
 }
@@ -52,6 +75,18 @@ const (
 	loss Outcome = 0
 )
 
+func parseOutcome(s string) Outcome {
+	if s == "X" {
+		return loss
+	}
+
+	if s == "Y" {
+		return draw
+	}
+
+	return won
+}
+
 func calculateOutcome(x Shape, y Shape) Outcome {
 	if x == y {
 		return draw
@@ -79,6 +114,38 @@ func calculateOutcome(x Shape, y Shape) Outcome {
 
 	if x == scissors && y == paper {
 		return won
+	}
+
+	panic("cannot reach")
+}
+
+func calculateShapeToChoose(opponentShape Shape, desiredOutcome Outcome) Shape {
+	if desiredOutcome == draw {
+		return opponentShape
+	}
+
+	if desiredOutcome == won {
+		if opponentShape == rock {
+			return paper
+		}
+
+		if opponentShape == paper {
+			return scissors
+		}
+
+		return rock
+	}
+
+	if desiredOutcome == loss {
+		if opponentShape == rock {
+			return scissors
+		}
+
+		if opponentShape == scissors {
+			return paper
+		}
+
+		return rock
 	}
 
 	panic("cannot reach")
