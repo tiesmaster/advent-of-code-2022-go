@@ -17,7 +17,7 @@ func main() {
 	fmt.Println("day 01: most calories (top 3) [data]: ", findTop3MostCalories(data))
 
 	fmt.Println("day 02: total score [test data]", day02.CalculateTotalScore(day02.TestData))
-	// fmt.Println("day 02: total score [data]", day02.CalculateTotalScore(day02.Data))
+	fmt.Println("day 02: total score [data]", day02.CalculateTotalScore(day02.Data))
 }
 
 func findTop3MostCalories(data string) int {
