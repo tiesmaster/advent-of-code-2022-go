@@ -57,19 +57,17 @@ const (
 	scissors Shape = 3
 )
 
-var shapeMapping map[string]Shape
+var (
+	shapeMapping = map[string]Shape{
+		"A": rock,
+		"B": paper,
+		"C": scissors,
 
-func init() {
-	shapeMapping = make(map[string]Shape)
-
-	shapeMapping["A"] = rock
-	shapeMapping["B"] = paper
-	shapeMapping["C"] = scissors
-
-	shapeMapping["X"] = rock
-	shapeMapping["Y"] = paper
-	shapeMapping["Z"] = scissors
-}
+		"X": rock,
+		"Y": paper,
+		"Z": scissors,
+	}
+)
 
 func parseShape(s string) Shape {
 	return shapeMapping[s]
