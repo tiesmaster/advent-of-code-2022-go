@@ -24,7 +24,7 @@ func TestCalculateSumOfPrioritiesStep2(t *testing.T) {
 		want int
 	}{
 			{TestData, 70},
-			// {Data, 8185},
+			{Data, 2817},
 	}
 	for _, c := range cases {
 		got := CalculateSumOfPrioritiesStep2(c.in)
