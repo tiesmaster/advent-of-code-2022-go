@@ -1,9 +1,8 @@
 package day02
 
 import (
-	"testing"
-
 	testhelpers "github.com/tiesmaster/advent-of-code-2022-go/testHelpers"
+	"testing"
 )
 
 func TestCalculateTotalScore(t *testing.T) {

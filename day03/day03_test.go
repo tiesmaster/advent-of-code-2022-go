@@ -1,6 +1,9 @@
 package day03
 
-import "testing"
+import (
+	testhelpers "github.com/tiesmaster/advent-of-code-2022-go/testHelpers"
+	"testing"
+)
 
 func TestCalculateSumOfPriorities(t *testing.T) {
 	cases := []struct {
@@ -13,7 +16,7 @@ func TestCalculateSumOfPriorities(t *testing.T) {
 	for _, c := range cases {
 		got := CalculateSumOfPriorities(c.in)
 		if got != c.want {
-			t.Errorf("CalculateSumOfPriorities(%v) == %v, want %v", c.in, got, c.want)
+			t.Errorf("CalculateSumOfPriorities(%v) == %v, want %v", testhelpers.TrimInput(c.in), got, c.want)
 		}
 	}
 }
@@ -29,7 +32,7 @@ func TestCalculateSumOfPrioritiesStep2(t *testing.T) {
 	for _, c := range cases {
 		got := CalculateSumOfPrioritiesStep2(c.in)
 		if got != c.want {
-			t.Errorf("CalculateSumOfPrioritiesStep2(%v) == %v, want %v", c.in, got, c.want)
+			t.Errorf("CalculateSumOfPrioritiesStep2(%v) == %v, want %v", testhelpers.TrimInput(c.in), got, c.want)
 		}
 	}
 }
