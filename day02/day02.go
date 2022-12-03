@@ -52,6 +52,11 @@ func calculateTotalStep2ForLine(line string) int {
 type Shape int
 type Outcome int
 
+type Game struct {
+    x Shape
+    y Shape
+}
+
 const (
 	rock     Shape = 1
 	paper    Shape = 2
@@ -65,7 +70,7 @@ const (
 )
 
 var (
-	shapeMapping = map[string]Shape{
+	shapeParsingMapping = map[string]Shape{
 		"A": rock,
 		"B": paper,
 		"C": scissors,
@@ -74,51 +79,34 @@ var (
 		"Y": paper,
 		"Z": scissors,
 	}
-	outcomeMapping = map[string]Outcome{
+	outcomeParsingMapping = map[string]Outcome{
 		"X": loss,
 		"Y": draw,
 		"Z": won,
 	}
+	outcomeMapping = map[[2]Shape]Outcome{
+		{rock, rock}: draw,
+		{rock, paper}: loss,
+		{rock, scissors}: won,
+		{paper, rock}: won,
+		{paper, paper}: draw,
+		{paper, scissors}: loss,
+		{scissors, rock}: loss,
+		{scissors, paper}: won,
+		{scissors, scissors}: draw,
+	}
 )
 
 func parseShape(s string) Shape {
-	return shapeMapping[s]
+	return shapeParsingMapping[s]
 }
 
 func parseOutcome(s string) Outcome {
-	return outcomeMapping[s]
+	return outcomeParsingMapping[s]
 }
 
 func calculateOutcome(x Shape, y Shape) Outcome {
-	if x == y {
-		return draw
-	}
-
-	if x == rock {
-		if y == paper {
-			return loss
-		} else {
-			return won
-		}
-	}
-
-	if x == paper {
-		if y == rock {
-			return won
-		} else {
-			return loss
-		}
-	}
-
-	if x == scissors {
-		if y == rock {
-			return loss
-		} else {
-			return won
-		}
-	}
-
-	panic("cannot reach")
+	return outcomeMapping[[2]Shape{x, y}]
 }
 
 func calculateShapeToChoose(opponentShape Shape, desiredOutcome Outcome) Shape {
