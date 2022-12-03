@@ -3,15 +3,14 @@ package main
 import "fmt"
 
 func main() {
-
-	printTafelVan(4)
+	printTafelVan(10)
 }
 
 func printTafelVan(tafel int) {
-	fmt.Println("Hier komt de tafel van", tafel)
+	fmt.Printf("Hier komt de tafel van %v", tafel)
 	fmt.Println()
-	for i := tafel; i <= 10*tafel; i += tafel {
-		fmt.Println("1 x 4 =", i)
+	for i := 1; i <= 10; i++ {
+		fmt.Printf("%2v x %v = %3v", i, tafel, i * tafel)
+		fmt.Println()
 	}
-
 }
