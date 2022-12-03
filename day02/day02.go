@@ -27,8 +27,8 @@ func CalculateTotalScoreStep2(strategyGuide string) int {
 }
 
 func calculateTotalForLine(line string) int {
-	opponent := parseShape(line[:1])
-	me := parseShape(line[2:])
+	opponent := parseOpponent(line[0])
+	me := parseMe(line[2])
 	outcome := calculateOutcome(me, opponent)
 
 	pointsSelected := int(me)
@@ -38,7 +38,7 @@ func calculateTotalForLine(line string) int {
 }
 
 func calculateTotalStep2ForLine(line string) int {
-	opponent := parseShape(line[:1])
+	opponent := parseOpponent(line[0])
 	desiredOutcome := parseOutcome(line[2:])
 
 	me := calculateShapeToChoose(opponent, desiredOutcome)
@@ -65,15 +65,6 @@ const (
 )
 
 var (
-	shapeParsingMapping = map[string]Shape{
-		"A": rock,
-		"B": paper,
-		"C": scissors,
-
-		"X": rock,
-		"Y": paper,
-		"Z": scissors,
-	}
 	outcomeParsingMapping = map[string]Outcome{
 		"X": loss,
 		"Y": draw,
@@ -92,8 +83,12 @@ var (
 	}
 )
 
-func parseShape(s string) Shape {
-	return shapeParsingMapping[s]
+func parseOpponent(b byte) Shape {
+	return Shape(b - 'A' + 1)
+}
+
+func parseMe(b byte) Shape {
+	return Shape(b - 'X' + 1)
 }
 
 func parseOutcome(s string) Outcome {
