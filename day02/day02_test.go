@@ -4,11 +4,11 @@ import "testing"
 
 func TestCalculateTotalScore(t *testing.T) {
 	cases := []struct {
-		in string
+		in   string
 		want int
 	}{
-			{TestData, 15},
-			{Data, 13924},
+		{TestData, 15},
+		{Data, 13924},
 	}
 	for _, c := range cases {
 		got := CalculateTotalScore(c.in)
@@ -20,11 +20,11 @@ func TestCalculateTotalScore(t *testing.T) {
 
 func TestCalculateTotalScoreStep2(t *testing.T) {
 	cases := []struct {
-		in string
+		in   string
 		want int
 	}{
-			{TestData, 12},
-			{Data, 13448},
+		{TestData, 12},
+		{Data, 13448},
 	}
 	for _, c := range cases {
 		got := CalculateTotalScoreStep2(c.in)

@@ -78,8 +78,8 @@ func parseShape(s string) Shape {
 type Outcome int
 
 const (
-	won     Outcome = 6
-	draw    Outcome = 3
+	won  Outcome = 6
+	draw Outcome = 3
 	loss Outcome = 0
 )
 

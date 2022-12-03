@@ -22,7 +22,7 @@ func CalculateSumOfPrioritiesStep2(listOfContents string) int {
 
 	sum := 0
 	for i := 0; i < len(rucksacks); i += 3 {
-		sum += findCommonItem(rucksacks[i:i+3])
+		sum += findCommonItem(rucksacks[i : i+3])
 	}
 
 	return sum
