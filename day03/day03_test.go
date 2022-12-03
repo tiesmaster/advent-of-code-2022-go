@@ -8,7 +8,7 @@ func TestCalculateSumOfPriorities(t *testing.T) {
 		want int
 	}{
 			{TestData, 157},
-			// {Data, 13924},
+			{Data, 8185},
 	}
 	for _, c := range cases {
 		got := CalculateSumOfPriorities(c.in)
