@@ -50,11 +50,18 @@ func calculateTotalStep2ForLine(line string) int {
 }
 
 type Shape int
+type Outcome int
 
 const (
 	rock     Shape = 1
 	paper    Shape = 2
 	scissors Shape = 3
+)
+
+const (
+	won  Outcome = 6
+	draw Outcome = 3
+	loss Outcome = 0
 )
 
 var (
@@ -67,30 +74,19 @@ var (
 		"Y": paper,
 		"Z": scissors,
 	}
+	outcomeMapping = map[string]Outcome{
+		"X": loss,
+		"Y": draw,
+		"Z": won,
+	}
 )
 
 func parseShape(s string) Shape {
 	return shapeMapping[s]
 }
 
-type Outcome int
-
-const (
-	won  Outcome = 6
-	draw Outcome = 3
-	loss Outcome = 0
-)
-
 func parseOutcome(s string) Outcome {
-	if s == "X" {
-		return loss
-	}
-
-	if s == "Y" {
-		return draw
-	}
-
-	return won
+	return outcomeMapping[s]
 }
 
 func calculateOutcome(x Shape, y Shape) Outcome {
