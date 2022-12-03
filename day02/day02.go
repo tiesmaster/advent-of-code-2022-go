@@ -53,8 +53,8 @@ type Shape int
 type Outcome int
 
 type Game struct {
-    x Shape
-    y Shape
+	x Shape
+	y Shape
 }
 
 const (
@@ -85,14 +85,14 @@ var (
 		"Z": won,
 	}
 	outcomeMapping = map[[2]Shape]Outcome{
-		{rock, rock}: draw,
-		{rock, paper}: loss,
-		{rock, scissors}: won,
-		{paper, rock}: won,
-		{paper, paper}: draw,
-		{paper, scissors}: loss,
-		{scissors, rock}: loss,
-		{scissors, paper}: won,
+		{rock, rock}:         draw,
+		{rock, paper}:        loss,
+		{rock, scissors}:     won,
+		{paper, rock}:        won,
+		{paper, paper}:       draw,
+		{paper, scissors}:    loss,
+		{scissors, rock}:     loss,
+		{scissors, paper}:    won,
 		{scissors, scissors}: draw,
 	}
 )
