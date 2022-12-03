@@ -110,32 +110,27 @@ func calculateOutcome(x Shape, y Shape) Outcome {
 }
 
 func calculateShapeToChoose(opponentShape Shape, desiredOutcome Outcome) Shape {
-	if desiredOutcome == draw {
+	switch desiredOutcome {
+	case won:
+		switch opponentShape {
+		case rock:
+			return paper
+		case paper:
+			return scissors
+		case scissors:
+			return rock
+		}
+	case draw:
 		return opponentShape
-	}
-
-	if desiredOutcome == won {
-		if opponentShape == rock {
+	case loss:
+		switch opponentShape {
+		case rock:
+			return scissors
+		case paper:
+			return rock
+		case scissors:
 			return paper
 		}
-
-		if opponentShape == paper {
-			return scissors
-		}
-
-		return rock
-	}
-
-	if desiredOutcome == loss {
-		if opponentShape == rock {
-			return scissors
-		}
-
-		if opponentShape == scissors {
-			return paper
-		}
-
-		return rock
 	}
 
 	panic("cannot reach")
