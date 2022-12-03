@@ -94,28 +94,28 @@ func calculateOutcome(x Shape, y Shape) Outcome {
 		return draw
 	}
 
-	if x == rock && y == paper {
-		return loss
+	if x == rock {
+		if y == paper {
+			return loss
+		} else {
+			return won
+		}
 	}
 
-	if x == rock && y == scissors {
-		return won
+	if x == paper {
+		if y == rock {
+			return won
+		} else {
+			return loss
+		}
 	}
 
-	if x == paper && y == rock {
-		return won
-	}
-
-	if x == paper && y == scissors {
-		return loss
-	}
-
-	if x == scissors && y == rock {
-		return loss
-	}
-
-	if x == scissors && y == paper {
-		return won
+	if x == scissors {
+		if y == rock {
+			return loss
+		} else {
+			return won
+		}
 	}
 
 	panic("cannot reach")
