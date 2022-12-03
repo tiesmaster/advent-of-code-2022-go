@@ -1,6 +1,8 @@
 package day02
 
-import "strings"
+import (
+	"strings"
+)
 
 func CalculateTotalScore(strategyGuide string) int {
 	parts := strings.Split(strategyGuide, "\n")
@@ -55,16 +57,22 @@ const (
 	scissors Shape = 3
 )
 
+var shapeMapping map[string]Shape
+
+func init() {
+	shapeMapping = make(map[string]Shape)
+
+	shapeMapping["A"] = rock
+	shapeMapping["B"] = paper
+	shapeMapping["C"] = scissors
+
+	shapeMapping["X"] = rock
+	shapeMapping["Y"] = paper
+	shapeMapping["Z"] = scissors
+}
+
 func parseShape(s string) Shape {
-	if s == "A" || s == "X" {
-		return rock
-	}
-
-	if s == "B" || s == "Y" {
-		return paper
-	}
-
-	return scissors
+	return shapeMapping[s]
 }
 
 type Outcome int
