@@ -52,11 +52,6 @@ func calculateTotalStep2ForLine(line string) int {
 type Shape int
 type Outcome int
 
-type Game struct {
-	x Shape
-	y Shape
-}
-
 const (
 	rock     Shape = 1
 	paper    Shape = 2
