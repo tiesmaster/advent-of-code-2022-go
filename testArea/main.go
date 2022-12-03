@@ -4,23 +4,14 @@ import "fmt"
 
 func main() {
 
-	line := "Yolo"
-	fmt.Println(line[:1])
-
-	var yolo Shape;
-	yolo = rock;
-
-	var i int
-
-	i = int(yolo)
-
-	fmt.Println(i)
+	printTafelVan(4)
 }
 
-type Shape int
+func printTafelVan(tafel int) {
+	fmt.Println("Hier komt de tafel van", tafel)
+	fmt.Println()
+	for i := tafel; i <= 10*tafel; i += tafel {
+		fmt.Println("1 x 4 =", i)
+	}
 
-const (
-	rock     Shape = 1
-	paper    Shape = 2
-	scissors Shape = 3
-)
+}
