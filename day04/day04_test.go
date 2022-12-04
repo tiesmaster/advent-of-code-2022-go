@@ -11,7 +11,7 @@ func TestCalculateOverlappingAssignmentPairs(t *testing.T) {
 		want int
 	}{
 		{TestData, 2},
-		// {Data, 8185},
+		{Data, 657},
 	}
 	for _, c := range cases {
 		got := CalculateOverlappingAssignmentPairs(c.in)
