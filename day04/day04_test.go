@@ -20,3 +20,19 @@ func TestCalculateOverlappingAssignmentPairs(t *testing.T) {
 		}
 	}
 }
+
+func TestCalculateOverlappingAssignmentPairsAsUnions(t *testing.T) {
+	cases := []struct {
+		in   string
+		want int
+	}{
+		{TestData, 4},
+		{Data, 657},
+	}
+	for _, c := range cases {
+		got := CalculateOverlappingAssignmentPairsAsUnions(c.in)
+		if got != c.want {
+			t.Errorf("CalculateOverlappingAssignmentPairsAsUnions(%v) == %v, want %v", testhelpers.TrimInput(c.in), got, c.want)
+		}
+	}
+}
