@@ -45,7 +45,7 @@ func arePairsOverlapping(assignmentPair string) bool {
 func arePairsOverlappingAsUnion(assignmentPair string) bool {
 	first, second := parsePair(assignmentPair)
 
-	return isOverlappingAsUnion(first, second)
+	return isOverlappingAsUnion(first, second) || isOverlappingAsUnion(second, first)
 }
 
 func parsePair(assignmentPair string) (sectionAssignment, sectionAssignment) {
