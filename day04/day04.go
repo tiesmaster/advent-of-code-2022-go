@@ -1,6 +1,7 @@
 package day04
 
 import (
+	"math"
 	"strconv"
 	"strings"
 )
@@ -61,7 +62,7 @@ func parseAssignment(assignment string) int {
 	totalBits := end - start + 1
 	shiftLeft := start - 1
 
-	i := 1<<totalBits - 1
+	i := int(math.Pow(2, float64(totalBits)) - 1)
 	i = i << shiftLeft
 
 	return i
