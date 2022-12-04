@@ -1,14 +1,10 @@
 package day04
 
 import (
+	"math"
 	"strconv"
 	"strings"
 )
-
-type sectionAssignment struct {
-	start int
-	end   int
-}
 
 func CalculateOverlappingAssignmentPairs(listOfAssignmentPairs string) int {
 	assignmentPairs := strings.Split(listOfAssignmentPairs, "\n")
@@ -39,16 +35,16 @@ func CalculateOverlappingAssignmentPairsAsUnions(listOfAssignmentPairs string) i
 func arePairsOverlapping(assignmentPair string) bool {
 	first, second := parsePair(assignmentPair)
 
-	return isOverlapping(first, second) || isOverlapping(second, first)
+	return first&second == first || first&second == second
 }
 
 func arePairsOverlappingAsUnion(assignmentPair string) bool {
 	first, second := parsePair(assignmentPair)
 
-	return isOverlappingAsUnion(first, second) || isOverlappingAsUnion(second, first)
+	return first&second > 0
 }
 
-func parsePair(assignmentPair string) (sectionAssignment, sectionAssignment) {
+func parsePair(assignmentPair string) (int, int) {
 	assignments := strings.Split(assignmentPair, ",")
 
 	firstAssignment := parseAssignment(assignments[0])
@@ -57,20 +53,17 @@ func parsePair(assignmentPair string) (sectionAssignment, sectionAssignment) {
 	return firstAssignment, secondAssignment
 }
 
-func parseAssignment(assignment string) sectionAssignment {
+func parseAssignment(assignment string) int {
 	sections := strings.Split(assignment, "-")
 
 	start, _ := strconv.Atoi(sections[0])
 	end, _ := strconv.Atoi(sections[1])
 
-	return sectionAssignment{start: start, end: end}
-}
+	totalBits := end - start + 1
+	shiftLeft := start - 1
 
-func isOverlapping(superSet, set sectionAssignment) bool {
-	return superSet.start <= set.start && superSet.end >= set.end
-}
+	i := int(math.Pow(2, float64(totalBits)) - 1)
+	i = i << shiftLeft
 
-func isOverlappingAsUnion(set1, set2 sectionAssignment) bool {
-	return (set2.start <= set1.start && set1.start <= set2.end) ||
-		(set2.start <= set1.end && set1.end <= set2.end)
+	return i
 }
