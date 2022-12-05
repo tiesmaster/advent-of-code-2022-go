@@ -2,33 +2,20 @@ package main
 
 import (
 	"fmt"
-	"regexp"
-	"strconv"
 )
 
 func main() {
-	instruction := parseInstruction("move 4 from 9 to 1")
+	sourcebytes := []byte{1, 2, 3, 8}
+	destBytes := []byte{2}
 
-	fmt.Println(instruction)
+	fmt.Println(sourcebytes, destBytes)
+
+	sourcebytes, destBytes = move(sourcebytes, destBytes, 2)
+	fmt.Println(sourcebytes, destBytes)
 }
 
-func parseInstruction(text string) instruction {
-	r, _ := regexp.Compile(`move (\d+) from (\d) to (\d)`)
-	matches := r.FindStringSubmatch(text)
-
-	quantity, _ := strconv.Atoi(matches[1])
-	source, _ := strconv.Atoi(matches[2])
-	destination, _ := strconv.Atoi(matches[3])
-
-	return instruction{
-		quantity:    quantity,
-		source:      source,
-		destination: destination,
-	}
-}
-
-type instruction struct {
-	quantity    int
-	source      int
-	destination int
+func move(sourcebytes []byte, destBytes []byte, q int) ([]byte, []byte) {
+	toMove := sourcebytes[len(sourcebytes)-q:]
+	destBytes = append(destBytes, toMove...)
+	return sourcebytes[:q], destBytes
 }

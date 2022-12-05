@@ -20,6 +20,19 @@ func PerformRearrangementProcedure(drawing string) string {
 	return topCrates(state)
 }
 
+func PerformRearrangementProcedureButWithCrateMover9001(drawing string) string {
+	parts := strings.Split(drawing, "\n\n")
+
+	state := parseStartingState(parts[0])
+	instructions := parseInstructions(parts[1])
+
+	for _, instr := range instructions {
+		executeInstructionViaCrateMover9001(state, instr)
+	}
+
+	return topCrates(state)
+}
+
 type State struct {
 	crates []stack
 }
@@ -110,6 +123,12 @@ func executeInstruction(state State, instr instruction) {
 	}
 }
 
+func executeInstructionViaCrateMover9001(state State, instr instruction) {
+	s, d := move(state.crates[instr.source], state.crates[instr.destination], instr.quantity)
+	state.crates[instr.source] = s
+	state.crates[instr.destination] = d
+}
+
 func topCrates(state State) string {
 	bytes := make([]byte, 0)
 	for i := 0; i < len(state.crates); i++ {
@@ -136,4 +155,11 @@ func pop(st stack) (stack, byte) {
 	st = st[:n]
 
 	return st, ret
+}
+
+func move(sourceStack stack, destinationStack stack, moveCount int) (stack, stack) {
+	toMove := sourceStack[len(sourceStack)-moveCount:]
+	destinationStack = append(destinationStack, toMove...)
+	return sourceStack[:moveCount], destinationStack
+
 }

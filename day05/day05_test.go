@@ -20,3 +20,19 @@ func TestPerformRearrangementProcedure(t *testing.T) {
 		}
 	}
 }
+
+func TestPerformRearrangementProcedureButWithCrateMover9001(t *testing.T) {
+	cases := []struct {
+		in   string
+		want string
+	}{
+		{TestData, "MCD"},
+		{Data, "JDTMRWCQJ"},
+	}
+	for _, c := range cases {
+		got := PerformRearrangementProcedureButWithCrateMover9001(c.in)
+		if got != c.want {
+			t.Errorf("PerformRearrangementProcedureButWithCrateMover9001(%v) == %v, want %v", testhelpers.TrimInput(c.in), got, c.want)
+		}
+	}
+}
