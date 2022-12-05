@@ -2,38 +2,30 @@ package main
 
 import (
 	"fmt"
-	"unicode/utf8"
 )
 
 func main() {
-	// printTafelVan(10)
+	bytes := []byte{6, 8, 3}
+	fmt.Println("original bytes: ", bytes)
 
-	// const s = "สวัสดี"
-	const s = "A"
-	fmt.Println("Len:", len(s))
+	bytes, b := pop(bytes)
 
-	for i := 0; i < len(s); i++ {
-		fmt.Printf("%x ", s[i])
-	}
+	fmt.Println("byte: ", b)
+	fmt.Println("bytes: ", bytes)
 
-	fmt.Println()
-
-	fmt.Println("Rune count:", utf8.RuneCountInString(s))
-
-	for idx, runeValue := range s {
-		fmt.Printf("%#U starts at %d\n", runeValue, idx)
-	}
-
-	var i int
-	i = int('A')
-	fmt.Println(i)
+	bytes = push(bytes, 123)
+	fmt.Println("bytes: ", bytes)
 }
 
-func printTafelVan(tafel int) {
-	fmt.Printf("Hier komt de tafel van %v", tafel)
-	fmt.Println()
-	for i := 1; i <= 10; i++ {
-		fmt.Printf("%2v x %v = %3v", i, tafel, i*tafel)
-		fmt.Println()
-	}
+func pop(bytes []byte) ([]byte, byte) {
+	n := len(bytes)
+	ret := bytes[n-1]
+
+	bytes = bytes[:n-1]
+
+	return bytes, ret
+}
+
+func push(bytes []byte, item byte) []byte {
+	return append(bytes, item)
 }
