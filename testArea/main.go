@@ -2,33 +2,33 @@ package main
 
 import (
 	"fmt"
+	"regexp"
+	"strconv"
 )
 
-type stack []byte
-
-
 func main() {
-	bytes := stack{6, 8, 3}
-	fmt.Println("original bytes: ", bytes)
+	instruction := parseInstruction("move 4 from 9 to 1")
 
-	bytes, b := pop(bytes)
-
-	fmt.Println("byte: ", b)
-	fmt.Println("bytes: ", bytes)
-
-	bytes = push(bytes, 123)
-	fmt.Println("bytes: ", bytes)
+	fmt.Println(instruction)
 }
 
-func push(bytes stack, item byte) stack {
-	return append(bytes, item)
+func parseInstruction(text string) instruction {
+	r, _ := regexp.Compile(`move (\d+) from (\d) to (\d)`)
+	matches := r.FindStringSubmatch(text)
+
+	quantity, _ := strconv.Atoi(matches[1])
+	source, _ := strconv.Atoi(matches[2])
+	destination, _ := strconv.Atoi(matches[3])
+
+	return instruction{
+		quantity:    quantity,
+		source:      source,
+		destination: destination,
+	}
 }
 
-func pop(bytes stack) (stack, byte) {
-	n := len(bytes)
-	ret := bytes[n-1]
-
-	bytes = bytes[:n-1]
-
-	return bytes, ret
+type instruction struct {
+	quantity    int
+	source      int
+	destination int
 }
