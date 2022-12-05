@@ -1,7 +1,7 @@
 package day05
 
 import (
-	// "strconv"
+	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
@@ -33,15 +33,46 @@ type instruction struct {
 }
 
 func parseStartingState(stateText string) State {
-	crates := []stack{
-		{90, 78},
-		{77, 67, 68},
-		{80},
-	}
+	parts := strings.Split(stateText, "\n")
+
+	totalLineCount := len(parts)
+	totalCratesCount := parseCrateNumbers(parts[totalLineCount-1])
+
+	crates := parseCrates(parts[:totalLineCount-1], totalCratesCount)
+
+	fmt.Println(crates)
 
 	return State{
 		crates: crates,
 	}
+}
+
+func parseCrateNumbers(crateIndexes string) int {
+	crateNumbers := strings.Split(crateIndexes, "  ")
+
+	s := crateNumbers[len(crateNumbers)-1]
+	s = strings.Trim(s, " ")
+	lastCrateNumber, _ := strconv.Atoi(s)
+
+	return lastCrateNumber
+}
+
+func parseCrates(crateLines []string, totalCratesCount int) []stack {
+	crates := make([]stack, totalCratesCount)
+
+	for i := len(crateLines) - 1; i >= 0; i-- {
+		line := crateLines[i]
+		for j := 0; j < totalCratesCount; j++ {
+			index := 4*j + 1
+			value := line[index]
+			if value != ' ' {
+				crates[j] = append(crates[j], value)
+			}
+		}
+	}
+
+	return crates
+
 }
 
 func parseInstructions(instructionText string) []instruction {
@@ -64,7 +95,7 @@ func parseInstruction(text string) instruction {
 	destination, _ := strconv.Atoi(matches[3])
 
 	return instruction{
-		quantity:    quantity,
+		quantity: quantity,
 		// the instructions are one-based, instead of zero-based
 		source:      source - 1,
 		destination: destination - 1,

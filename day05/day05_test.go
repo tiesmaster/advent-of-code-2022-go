@@ -11,7 +11,7 @@ func TestPerformRearrangementProcedure(t *testing.T) {
 		want string
 	}{
 		{TestData, "CMZ"},
-		// {Data, 657},
+		{Data, "JDTMRWCQJ"},
 	}
 	for _, c := range cases {
 		got := PerformRearrangementProcedure(c.in)
