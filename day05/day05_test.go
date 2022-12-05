@@ -27,7 +27,7 @@ func TestPerformRearrangementProcedureButWithCrateMover9001(t *testing.T) {
 		want string
 	}{
 		{TestData, "MCD"},
-		{Data, "JDTMRWCQJ"},
+		{Data, "VHJDDCWRD"},
 	}
 	for _, c := range cases {
 		got := PerformRearrangementProcedureButWithCrateMover9001(c.in)
