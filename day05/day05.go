@@ -8,7 +8,7 @@ import (
 func PerformRearrangementProcedure(drawing string) string {
 	parts := strings.Split(drawing, "\n\n")
 
-	state := parseState(parts[0])
+	state := parseStartingState(parts[0])
 	instructions := parseInstructions(parts[1])
 
 	for _, instr := range instructions {
@@ -18,9 +18,11 @@ func PerformRearrangementProcedure(drawing string) string {
 	return topCrates(state)
 }
 
-type State []crateStack
+type State struct {
+	crates []stack
+}
 
-type crateStack []string
+type stack []byte
 
 type instruction struct {
 	quantity    int
@@ -28,7 +30,7 @@ type instruction struct {
 	destination int
 }
 
-func parseState(s string) State {
+func parseStartingState(stateText string) State {
 	panic("unimplemented")
 }
 
@@ -41,5 +43,16 @@ func executeInstruction(state State, instr instruction) {
 }
 
 func topCrates(state State) string {
-	panic("unimplemented")
+	s := make([]byte, 0)
+	for i := 0; i < len(state.crates); i++ {
+		crate := state.crates[i]
+		if len(crate) > 0 {
+			s = append(s, crate[len(crate)-1])
+		}
+	}
+
+	// TODO: make use of builder
+	// https://yourbasic.org/golang/build-append-concatenate-strings-efficiently/
+
+	return string(s)
 }
