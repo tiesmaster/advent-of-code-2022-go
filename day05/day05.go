@@ -128,18 +128,17 @@ func executeInstructionViaCrateMover9001(state State, instr instruction) {
 }
 
 func topCrates(state State) string {
-	bytes := make([]byte, 0)
+	var b strings.Builder
+	b.Grow(len(state.crates))
+	
 	for i := 0; i < len(state.crates); i++ {
 		crate := state.crates[i]
 		if len(crate) > 0 {
-			bytes = append(bytes, crate[len(crate)-1])
+			fmt.Fprintf(&b, "%c", crate[len(crate)-1])
 		}
 	}
 
-	// TODO: make use of builder
-	// https://yourbasic.org/golang/build-append-concatenate-strings-efficiently/
-
-	return string(bytes)
+	return b.String()
 }
 
 func push(st stack, item byte) stack {
