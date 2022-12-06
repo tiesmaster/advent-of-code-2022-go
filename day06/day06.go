@@ -1,9 +1,19 @@
 package day06
 
-func FindStartOfPacket(datastream string) int {
-	for i := 0; i < len(datastream)-4; i++ {
-		if isStartOfPacket(datastream[i : i+4]) {
-			return i + 4
+func FindFirstStartOfPacket(datastream string) int {
+	const windowSize = 4
+	return findSequenceStart(datastream, windowSize) + windowSize
+}
+
+func FindFirstStartOfMessage(datastream string) int {
+	const windowSize = 14
+	return findSequenceStart(datastream, windowSize) + windowSize
+}
+
+func findSequenceStart(datastream string, windowSize int) int {
+	for i := 0; i < len(datastream)-windowSize; i++ {
+		if isStartOfPacket(datastream[i : i+windowSize]) {
+			return i
 		}
 	}
 
@@ -11,12 +21,16 @@ func FindStartOfPacket(datastream string) int {
 }
 
 func isStartOfPacket(window string) bool {
-	return window[0] != window[1] &&
-		window[0] != window[2] &&
-		window[0] != window[3] &&
+	index := make(map[rune]int)
+	for _, r := range window {
+		index[r]++
+	}
 
-		window[1] != window[2] &&
-		window[1] != window[3] &&
+	for _, i := range index {
+		if i > 1 {
+			return false
+		}
+	}
 
-		window[2] != window[3]
+	return true
 }
