@@ -36,7 +36,7 @@ type State struct {
 	crates []stack
 }
 
-type stack []byte
+type stack []rune
 
 type instruction struct {
 	quantity    int
@@ -69,7 +69,7 @@ func parseCrates(crateLines []string, totalCratesCount int) []stack {
 		line := crateLines[i]
 		for j := 0; j < totalCratesCount; j++ {
 			index := 4*j + 1
-			value := line[index]
+			value := rune(line[index])
 			if value != ' ' {
 				crates[j] = append(crates[j], value)
 			}
@@ -108,10 +108,10 @@ func parseInstruction(text string) instruction {
 }
 
 func executeInstruction(state State, instr instruction) {
-	var b byte
+	var r rune
 	for i := 0; i < instr.quantity; i++ {
-		state.crates[instr.source], b = pop(state.crates[instr.source])
-		state.crates[instr.destination] = push(state.crates[instr.destination], b)
+		state.crates[instr.source], r = pop(state.crates[instr.source])
+		state.crates[instr.destination] = push(state.crates[instr.destination], r)
 	}
 }
 
@@ -134,11 +134,11 @@ func topCrates(state State) string {
 	return s
 }
 
-func push(st stack, item byte) stack {
+func push(st stack, item rune) stack {
 	return append(st, item)
 }
 
-func pop(st stack) (stack, byte) {
+func pop(st stack) (stack, rune) {
 	n := len(st) - 1
 	ret := st[n]
 
