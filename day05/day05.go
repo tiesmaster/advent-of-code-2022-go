@@ -89,9 +89,9 @@ func parseCrates(crateLines []string, totalCratesCount int) []stack {
 func parseInstructions(instructionText string) []instruction {
 	parts := strings.Split(instructionText, "\n")
 
-	instructions := make([]instruction, 0)
-	for _, text := range parts {
-		instructions = append(instructions, parseInstruction(text))
+	instructions := make([]instruction, len(parts))
+	for i, text := range parts {
+		instructions[i] = parseInstruction(text)
 	}
 
 	return instructions
