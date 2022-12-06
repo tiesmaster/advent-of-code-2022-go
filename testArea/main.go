@@ -2,34 +2,32 @@ package main
 
 import (
 	"fmt"
+	"math"
 )
 
-type stack []byte
+func Sqrt(x float64) float64 {
+	z := 1.0
+
+	for i := 0; i < 10; i++ {
+		fmt.Println(z)
+		z -= (z*z - x) / (2*z)
+	}
+
+	return z
+}
 
 func main() {
-	sourcebytes := []byte{1, 2, 3, 8}
-	destBytes := []byte{2}
+	// fmt.Println(Sqrt(2))
+	math.Sqrt()
 
-	fmt.Println(sourcebytes, destBytes)
+	for i := 0; i < 10; i++ {
 
-	sourcebytes, destBytes = move(sourcebytes, destBytes, 2)
-	fmt.Println(sourcebytes, destBytes)
+		fmt.Printf("****************** CALCULATING SQRT FOR: %v *****************", i)
+		fmt.Println()
+		Sqrt(float64(i))
 
-	sourcebytes, destBytes = move(sourcebytes, destBytes, 3)
-	fmt.Println(sourcebytes, destBytes)
-}
-
-func move(sourceStack stack, destinationStack stack, moveCount int) (stack, stack) {
-	totalCountToMove := min(moveCount, len(sourceStack))
-	toMove := sourceStack[len(sourceStack)-totalCountToMove:]
-	destinationStack = append(destinationStack, toMove...)
-	return sourceStack[:len(sourceStack)-totalCountToMove], destinationStack
-}
-
-func min(x, y int) int {
-	if x > y {
-		return y
-	} else {
-		return x
+		fmt.Println()
+		fmt.Println()
+		fmt.Println()
 	}
 }
