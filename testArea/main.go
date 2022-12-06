@@ -2,32 +2,19 @@ package main
 
 import (
 	"fmt"
-	"math"
+	"time"
 )
 
-func Sqrt(x float64) float64 {
-	z := 1.0
-
-	for i := 0; i < 10; i++ {
-		fmt.Println(z)
-		z -= (z*z - x) / (2*z)
-	}
-
-	return z
-}
-
 func main() {
-	// fmt.Println(Sqrt(2))
-	math.Sqrt()
-
-	for i := 0; i < 10; i++ {
-
-		fmt.Printf("****************** CALCULATING SQRT FOR: %v *****************", i)
-		fmt.Println()
-		Sqrt(float64(i))
-
-		fmt.Println()
-		fmt.Println()
-		fmt.Println()
-	}
-}
+	fmt.Println("When's Saturday?")
+	today := time.Now().Weekday()
+	switch time.Saturday {
+	case today + 0:
+		fmt.Println("Today.")
+	case today + 1:
+		fmt.Println("Tomorrow.")
+	case today + 2:
+		fmt.Println("In two days.")
+	default:
+		fmt.Println("Too far away.")
+	}}
