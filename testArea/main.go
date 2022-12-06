@@ -1,25 +1,24 @@
 package main
 
-import (
-	"fmt"
-)
+import "golang.org/x/tour/pic"
 
-func main() {
-	b := [5]int{1, 2, 3, 4, 5}
+func Pic(dx, dy int) [][]uint8 {
+	// pic := make([]uint8, dy)
+	// for i := 0; i < dx; 
+	// var pic [][]uint8
 
-	s := b[2:]
-	printSlice(s)
-
-	s = append(s, 99)
-	printSlice(s)
-
-	s[0] = 666
-
-	printSlice(s)
-
-	fmt.Println(b)
+	// return pic
+	ss := make([][]uint8, dy)
+	for y := 0; y < dy; y++ {
+		s := make([]uint8, dx)
+		for x := 0; x < dx; x++ {
+			s[x] = uint8((x + y) / 2)
+		}
+		ss[y] = s
+	}
+	return ss
 }
 
-func printSlice(s []int) {
-	fmt.Printf("len=%d cap=%d %v\n", len(s), cap(s), s)
+func main() {
+	pic.Show(Pic)
 }
