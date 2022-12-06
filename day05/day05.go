@@ -56,11 +56,8 @@ func parseStartingState(stateText string) State {
 }
 
 func parseCrateNumbers(crateIndexes string) int {
-	crateNumbers := strings.Split(crateIndexes, "  ")
-
-	s := crateNumbers[len(crateNumbers)-1]
-	s = strings.Trim(s, " ")
-	lastCrateNumber, _ := strconv.Atoi(s)
+	crateNumbers := strings.Fields(crateIndexes)
+	lastCrateNumber, _ := strconv.Atoi(crateNumbers[len(crateNumbers)-1])
 
 	return lastCrateNumber
 }
