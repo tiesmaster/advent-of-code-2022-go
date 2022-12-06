@@ -1,7 +1,6 @@
 package day05
 
 import (
-	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
@@ -52,8 +51,6 @@ func parseStartingState(stateText string) State {
 	totalCratesCount := parseCrateNumbers(parts[totalLineCount-1])
 
 	crates := parseCrates(parts[:totalLineCount-1], totalCratesCount)
-
-	fmt.Println(crates)
 
 	return State{crates}
 }
