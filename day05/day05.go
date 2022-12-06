@@ -128,17 +128,16 @@ func executeInstructionViaCrateMover9001(state State, instr instruction) {
 }
 
 func topCrates(state State) string {
-	var b strings.Builder
-	b.Grow(len(state.crates))
-	
+	s := ""
 	for i := 0; i < len(state.crates); i++ {
 		crate := state.crates[i]
 		if len(crate) > 0 {
-			fmt.Fprintf(&b, "%c", crate[len(crate)-1])
+			b := crate[len(crate)-1]
+			s = s + string(b)
 		}
 	}
 
-	return b.String()
+	return s
 }
 
 func push(st stack, item byte) stack {
