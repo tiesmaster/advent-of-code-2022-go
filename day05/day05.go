@@ -55,9 +55,7 @@ func parseStartingState(stateText string) State {
 
 	fmt.Println(crates)
 
-	return State{
-		crates: crates,
-	}
+	return State{crates}
 }
 
 func parseCrateNumbers(crateIndexes string) int {

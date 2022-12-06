@@ -63,7 +63,7 @@ func parseAssignment(assignment string) sectionAssignment {
 	start, _ := strconv.Atoi(sections[0])
 	end, _ := strconv.Atoi(sections[1])
 
-	return sectionAssignment{start: start, end: end}
+	return sectionAssignment{start, end}
 }
 
 func isOverlapping(superSet, set sectionAssignment) bool {
