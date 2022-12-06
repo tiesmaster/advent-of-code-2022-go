@@ -11,7 +11,7 @@ func TestFindStartOfPacket(t *testing.T) {
 		want int
 	}{
 		{TestData, 7},
-		{Data, 7},
+		{Data, 1965},
 	}
 	for _, c := range cases {
 		got := FindStartOfPacket(c.in)
