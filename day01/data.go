@@ -1,13 +1,13 @@
-package main
+package day01
 
 import (
 	_ "embed"
 )
 
 //go:embed data.txt
-var data string
+var Data string
 
-var testData = `1000
+var TestData = `1000
 2000
 3000
 

@@ -1,0 +1,75 @@
+package day01
+
+import (
+	"fmt"
+	"sort"
+	"strconv"
+	"strings"
+)
+
+func FindMostCalories(data string) int {
+	parts := strings.Split(data, "\n")
+
+	max := 0
+	sum := 0
+
+	for _, s := range parts {
+		if s == "" {
+			max = Max(max, sum)
+			sum = 0
+		} else {
+			i, _ := strconv.Atoi(s)
+			sum += i
+		}
+	}
+
+	return max
+}
+
+func FindTop3MostCalories(data string) int {
+	parts := strings.Split(data, "\n")
+
+	totals := make([]int, 0)
+	sum := 0
+
+	for _, s := range parts {
+		if s == "" {
+			totals = append(totals, sum)
+			sum = 0
+		} else {
+			i, _ := strconv.Atoi(s)
+			sum += i
+		}
+	}
+
+	sort.Slice(totals, func(i, j int) bool {
+		return totals[i] > totals[j]
+	})
+
+	top3 := totals[:3]
+
+	return sumTotals(top3)
+}
+
+func sumTotals(totals []int) int {
+	sum := 0
+	for _, s := range totals {
+		sum += s
+	}
+
+	return sum
+}
+
+func printTotals(totals []int) {
+	for _, s := range totals {
+		fmt.Println(s)
+	}
+}
+
+func Max(x, y int) int {
+	if x > y {
+		return x
+	} else {
+		return y
+	}
+}
