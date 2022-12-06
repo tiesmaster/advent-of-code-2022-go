@@ -159,9 +159,9 @@ func pop(st stack) (stack, byte) {
 
 func move(sourceStack stack, destinationStack stack, moveCount int) (stack, stack) {
 	totalCountToMove := min(moveCount, len(sourceStack))
-	toMove := sourceStack[len(sourceStack) - totalCountToMove:]
+	toMove := sourceStack[len(sourceStack)-totalCountToMove:]
 	destinationStack = append(destinationStack, toMove...)
-	return sourceStack[:len(sourceStack) - totalCountToMove], destinationStack
+	return sourceStack[:len(sourceStack)-totalCountToMove], destinationStack
 }
 
 func min(x, y int) int {

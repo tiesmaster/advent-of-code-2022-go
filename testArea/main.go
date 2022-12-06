@@ -6,7 +6,6 @@ import (
 
 type stack []byte
 
-
 func main() {
 	sourcebytes := []byte{1, 2, 3, 8}
 	destBytes := []byte{2}
@@ -22,9 +21,9 @@ func main() {
 
 func move(sourceStack stack, destinationStack stack, moveCount int) (stack, stack) {
 	totalCountToMove := min(moveCount, len(sourceStack))
-	toMove := sourceStack[len(sourceStack) - totalCountToMove:]
+	toMove := sourceStack[len(sourceStack)-totalCountToMove:]
 	destinationStack = append(destinationStack, toMove...)
-	return sourceStack[:len(sourceStack) - totalCountToMove], destinationStack
+	return sourceStack[:len(sourceStack)-totalCountToMove], destinationStack
 }
 
 func min(x, y int) int {
