@@ -28,10 +28,6 @@ type State struct {
 	crates []stack
 }
 
-type stack struct{
-	slice []rune
-}
-
 type instruction struct {
 	quantity    int
 	source      int
@@ -130,7 +126,7 @@ func executeInstructionViaCrateMover9001(state State, instr instruction) {
 	for i := 0; i < instr.quantity; i++ {
 		tempStack.push(state.crates[instr.source].pop())
 	}
-	
+
 	for !tempStack.isEmpty() {
 		state.crates[instr.destination].push(tempStack.pop())
 	}
@@ -147,25 +143,4 @@ func topCrates(state State) string {
 	}
 
 	return s
-}
-
-func newStack() stack {
-	return stack{make([]rune, 0)}
-}
-
-func (st *stack) push(item rune) {
-	st.slice = append(st.slice, item)
-}
-
-func (st *stack) pop() rune {
-	n := len(st.slice) - 1
-	ret := st.slice[n]
-
-	st.slice = st.slice[:n]
-
-	return ret
-}
-
-func (st *stack) isEmpty() bool {
-	return len(st.slice) == 0
 }
