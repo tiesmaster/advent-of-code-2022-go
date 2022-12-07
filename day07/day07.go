@@ -1,6 +1,7 @@
 package day07
 
 import (
+	"math"
 	"strconv"
 	"strings"
 )
@@ -8,6 +9,20 @@ import (
 func Step01(terminalOutput string) int {
 	tree := parseTerminalOutput(terminalOutput)
 	return sumDirsWithTotalSizeOf(tree, 100000)
+}
+
+func Step02(terminalOutput string) int {
+	tree := parseTerminalOutput(terminalOutput)
+
+	diskSize := 70_000_000
+	requiredFreeDiskSpace := 30_000_000
+
+	currentSize := calculateTotalSize(tree)
+	remainingSpace := diskSize - currentSize
+
+	additionalSpaceNeeded := requiredFreeDiskSpace - remainingSpace
+
+	return findSmallestDir(tree, additionalSpaceNeeded)
 }
 
 type dirEntry struct {
@@ -64,6 +79,17 @@ func processDirListing(cwd dirEntry, output string) {
 	}
 }
 
+func findSmallestDir(root dirEntry, minDirSize int) int {
+	dirSize := math.MaxInt
+	dirs := findDirsWithTotalSizeOfMinimal(root, minDirSize)
+	for _, d := range dirs {
+		dirSize = min(dirSize, calculateTotalSize(d))
+	}
+
+	return dirSize
+
+}
+
 func sumDirsWithTotalSizeOf(root dirEntry, maxDirSize int) int {
 	sum := 0
 	dirs := findDirsWithTotalSizeOf(root, maxDirSize)
@@ -79,6 +105,18 @@ func findDirsWithTotalSizeOf(dir dirEntry, maxDirSize int) []dirEntry {
 	allDirs := getDescendantDirectories(dir)
 	for _, d := range allDirs {
 		if calculateTotalSize(d) <= maxDirSize {
+			dirs = append(dirs, d)
+		}
+	}
+
+	return dirs
+}
+
+func findDirsWithTotalSizeOfMinimal(dir dirEntry, minDirSize int) []dirEntry {
+	dirs := make([]dirEntry, 0)
+	allDirs := getDescendantDirectories(dir)
+	for _, d := range allDirs {
+		if calculateTotalSize(d) >= minDirSize {
 			dirs = append(dirs, d)
 		}
 	}
@@ -154,4 +192,12 @@ func splitFirst(s string, sep string) (string, string) {
 func toInt(s string) int {
 	i, _ := strconv.Atoi(s)
 	return i
+}
+
+func min(x, y int) int {
+	if x < y {
+		return x
+	} else {
+		return y
+	}
 }
