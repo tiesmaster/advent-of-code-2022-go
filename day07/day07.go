@@ -18,7 +18,7 @@ type dirEntry struct {
 }
 
 func parseTerminalOutput(output string) dirEntry {
-	root := dirEntry{isDirectory: true}
+	root := dirEntry{isDirectory: true, children: make(map[string]dirEntry)}
 	cwd := root
 
 	var first string
@@ -53,7 +53,11 @@ func processDirListing(cwd dirEntry, output string) {
 	for _, l := range lines {
 		switch l[:3] {
 		case "dir":
-			cwd.children[l[4:]] = dirEntry{isDirectory: true}
+			cwd.children[l[4:]] = dirEntry{
+				isDirectory: true,
+				children:    make(map[string]dirEntry),
+				parent:      &cwd,
+			}
 		default:
 			fields := strings.Fields(l)
 			cwd.children[fields[1]] = dirEntry{size: toInt(fields[0])}
