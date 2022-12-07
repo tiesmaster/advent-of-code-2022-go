@@ -126,7 +126,14 @@ func executeInstruction(state State, instr instruction) {
 }
 
 func executeInstructionViaCrateMover9001(state State, instr instruction) {
-	move(&state.crates[instr.source], &state.crates[instr.destination], instr.quantity)
+	tempStack := newStack()
+	for i := 0; i < instr.quantity; i++ {
+		tempStack.push(state.crates[instr.source].pop())
+	}
+	
+	for !tempStack.isEmpty() {
+		state.crates[instr.destination].push(tempStack.pop())
+	}
 }
 
 func topCrates(state State) string {
@@ -161,20 +168,4 @@ func (st *stack) pop() rune {
 
 func (st *stack) isEmpty() bool {
 	return len(st.slice) == 0
-}
-
-func move(sourceStack *stack, destinationStack *stack, moveCount int) {
-	totalCountToMove := min(moveCount, len(sourceStack.slice))
-	toMove := sourceStack.slice[len(sourceStack.slice)-totalCountToMove:]
-
-	destinationStack.slice = append(destinationStack.slice, toMove...)
-	sourceStack.slice = sourceStack.slice[:len(sourceStack.slice)-totalCountToMove]
-}
-
-func min(x, y int) int {
-	if x > y {
-		return y
-	} else {
-		return x
-	}
 }
