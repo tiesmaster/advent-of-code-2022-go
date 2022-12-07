@@ -17,19 +17,12 @@ func Step02(terminalOutput string) int {
 	diskSize := 70_000_000
 	requiredFreeDiskSpace := 30_000_000
 
-	currentSize := calculateTotalSize(tree)
+	currentSize := tree.totalSize()
 	remainingSpace := diskSize - currentSize
 
 	additionalSpaceNeeded := requiredFreeDiskSpace - remainingSpace
 
 	return findSmallestDir(tree, additionalSpaceNeeded)
-}
-
-type dirEntry struct {
-	isDirectory bool
-	size        int
-	parent      *dirEntry
-	children    map[string]dirEntry
 }
 
 func parseTerminalOutput(output string) dirEntry {
@@ -49,7 +42,7 @@ func processOutput(output string, root, cwd dirEntry) dirEntry {
 	command, commandOutput := splitFirst(output, "\n")
 	switch command {
 	case "$ cd /":
-		return getRoot(cwd)
+		return cwd.root()
 	case "$ cd ..":
 		return *cwd.parent
 	case "$ ls":
@@ -83,7 +76,7 @@ func findSmallestDir(root dirEntry, minDirSize int) int {
 	dirSize := math.MaxInt
 	dirs := findDirsWithTotalSizeOfMinimal(root, minDirSize)
 	for _, d := range dirs {
-		dirSize = min(dirSize, calculateTotalSize(d))
+		dirSize = min(dirSize, d.totalSize())
 	}
 
 	return dirSize
@@ -94,89 +87,18 @@ func sumDirsWithTotalSizeOf(root dirEntry, maxDirSize int) int {
 	sum := 0
 	dirs := findDirsWithTotalSizeOf(root, maxDirSize)
 	for _, d := range dirs {
-		sum += calculateTotalSize(d)
+		sum += d.totalSize()
 	}
 
 	return sum
 }
 
 func findDirsWithTotalSizeOf(dir dirEntry, maxDirSize int) []dirEntry {
-	dirs := make([]dirEntry, 0)
-	allDirs := getDescendantDirectories(dir)
-	for _, d := range allDirs {
-		if calculateTotalSize(d) <= maxDirSize {
-			dirs = append(dirs, d)
-		}
-	}
-
-	return dirs
+	return dir.query(func(d dirEntry) bool { return d.totalSize() <= maxDirSize })
 }
 
 func findDirsWithTotalSizeOfMinimal(dir dirEntry, minDirSize int) []dirEntry {
-	dirs := make([]dirEntry, 0)
-	allDirs := getDescendantDirectories(dir)
-	for _, d := range allDirs {
-		if calculateTotalSize(d) >= minDirSize {
-			dirs = append(dirs, d)
-		}
-	}
-
-	return dirs
-}
-
-func getRoot(dir dirEntry) dirEntry {
-	for dir.parent != nil {
-		dir = *dir.parent
-	}
-
-	return dir
-}
-
-func getDescendantDirectories(root dirEntry) []dirEntry {
-	result := make([]dirEntry, 0)
-	stack := newStack()
-
-	stack.push(root)
-
-	for !stack.isEmpty() {
-		dir := stack.pop()
-
-		result = append(result, dir)
-		stack.push(getChildDirectories(dir.children)...)
-	}
-
-	return result
-}
-
-func getChildDirectories(children map[string]dirEntry) []dirEntry {
-	result := make([]dirEntry, 0)
-	for _, c := range children {
-		if c.isDirectory {
-			result = append(result, c)
-		}
-	}
-
-	return result
-}
-
-func calculateTotalSize(dir dirEntry) int {
-	size := 0
-	for _, d := range getDescendantDirectories(dir) {
-		size += getSize(d)
-	}
-
-	return size
-}
-
-func getSize(dir dirEntry) int {
-	size := 0
-	for _, c := range dir.children {
-		if !c.isDirectory {
-			size += c.size
-		}
-	}
-
-	return size
+	return dir.query(func(d dirEntry) bool { return d.totalSize() >= minDirSize })
 }
 
 func splitFirst(s string, sep string) (string, string) {
