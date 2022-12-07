@@ -34,8 +34,7 @@ func processOutput(output string, root, cwd dirEntry) dirEntry {
 	command, commandOutput := splitFirst(output, "\n")
 	switch command {
 	case "$ cd /":
-		// TODO: Implement actual cd /
-		return cwd
+		return getRoot(cwd)
 	case "$ cd ..":
 		return *cwd.parent
 	case "$ ls":
@@ -85,6 +84,14 @@ func findDirsWithTotalSizeOf(dir dirEntry, maxDirSize int) []dirEntry {
 	}
 
 	return dirs
+}
+
+func getRoot(dir dirEntry) dirEntry {
+	for dir.parent != nil {
+		dir = *dir.parent
+	}
+
+	return dir
 }
 
 func getDescendantDirectories(root dirEntry) []dirEntry {
