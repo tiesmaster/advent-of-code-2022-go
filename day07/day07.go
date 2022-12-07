@@ -134,16 +134,15 @@ func getRoot(dir dirEntry) dirEntry {
 
 func getDescendantDirectories(root dirEntry) []dirEntry {
 	result := make([]dirEntry, 0)
-	stack := make([]dirEntry, 0)
+	stack := newStack()
 
-	stack = append(stack, root)
+	stack.push(root)
 
-	for len(stack) > 0 {
-		dir := stack[len(stack)-1]
-		stack = stack[:len(stack)-1]
+	for !stack.isEmpty() {
+		dir := stack.pop()
 
 		result = append(result, dir)
-		stack = append(stack, getChildDirectories(dir.children)...)
+		stack.push(getChildDirectories(dir.children)...)
 	}
 
 	return result
