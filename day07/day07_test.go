@@ -22,7 +22,6 @@ func TestStep01(t *testing.T) {
 	}
 }
 
-
 func TestStep02(t *testing.T) {
 	cases := []struct {
 		in   string
