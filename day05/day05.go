@@ -36,7 +36,9 @@ type State struct {
 	crates []stack
 }
 
-type stack []rune
+type stack struct{
+	slice []rune
+}
 
 type instruction struct {
 	quantity    int
@@ -63,7 +65,7 @@ func parseCrateNumbers(crateIndexes string) int {
 }
 
 func parseCrates(crateLines []string, totalCratesCount int) []stack {
-	crates := make([]stack, totalCratesCount)
+	crates := createCrates(totalCratesCount)
 
 	for i := len(crateLines) - 1; i >= 0; i-- {
 		line := crateLines[i]
@@ -71,13 +73,23 @@ func parseCrates(crateLines []string, totalCratesCount int) []stack {
 			index := 4*j + 1
 			value := rune(line[index])
 			if value != ' ' {
-				crates[j] = append(crates[j], value)
+				crates[j].push(value)
 			}
 		}
 	}
 
 	return crates
 
+}
+
+func createCrates(totalCratesCount int) []stack {
+	crates := make([]stack, totalCratesCount)
+
+	for i := 0; i < totalCratesCount; i++ {
+		crates[i] = newStack()
+	}
+
+	return crates
 }
 
 func parseInstructions(instructionText string) []instruction {
@@ -108,25 +120,21 @@ func parseInstruction(text string) instruction {
 }
 
 func executeInstruction(state State, instr instruction) {
-	var r rune
 	for i := 0; i < instr.quantity; i++ {
-		state.crates[instr.source], r = pop(state.crates[instr.source])
-		state.crates[instr.destination] = push(state.crates[instr.destination], r)
+		state.crates[instr.destination].push(state.crates[instr.source].pop())
 	}
 }
 
 func executeInstructionViaCrateMover9001(state State, instr instruction) {
-	s, d := move(state.crates[instr.source], state.crates[instr.destination], instr.quantity)
-	state.crates[instr.source] = s
-	state.crates[instr.destination] = d
+	move(&state.crates[instr.source], &state.crates[instr.destination], instr.quantity)
 }
 
 func topCrates(state State) string {
 	s := ""
 	for i := 0; i < len(state.crates); i++ {
 		crate := state.crates[i]
-		if len(crate) > 0 {
-			b := crate[len(crate)-1]
+		if !crate.isEmpty() {
+			b := crate.pop()
 			s = s + string(b)
 		}
 	}
@@ -134,24 +142,33 @@ func topCrates(state State) string {
 	return s
 }
 
-func push(st stack, item rune) stack {
-	return append(st, item)
+func newStack() stack {
+	return stack{make([]rune, 0)}
 }
 
-func pop(st stack) (stack, rune) {
-	n := len(st) - 1
-	ret := st[n]
-
-	st = st[:n]
-
-	return st, ret
+func (st *stack) push(item rune) {
+	st.slice = append(st.slice, item)
 }
 
-func move(sourceStack stack, destinationStack stack, moveCount int) (stack, stack) {
-	totalCountToMove := min(moveCount, len(sourceStack))
-	toMove := sourceStack[len(sourceStack)-totalCountToMove:]
-	destinationStack = append(destinationStack, toMove...)
-	return sourceStack[:len(sourceStack)-totalCountToMove], destinationStack
+func (st *stack) pop() rune {
+	n := len(st.slice) - 1
+	ret := st.slice[n]
+
+	st.slice = st.slice[:n]
+
+	return ret
+}
+
+func (st *stack) isEmpty() bool {
+	return len(st.slice) == 0
+}
+
+func move(sourceStack *stack, destinationStack *stack, moveCount int) {
+	totalCountToMove := min(moveCount, len(sourceStack.slice))
+	toMove := sourceStack.slice[len(sourceStack.slice)-totalCountToMove:]
+
+	destinationStack.slice = append(destinationStack.slice, toMove...)
+	sourceStack.slice = sourceStack.slice[:len(sourceStack.slice)-totalCountToMove]
 }
 
 func min(x, y int) int {
