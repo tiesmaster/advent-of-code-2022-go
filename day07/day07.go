@@ -66,7 +66,73 @@ func processDirListing(cwd dirEntry, output string) {
 }
 
 func sumDirsWithTotalSizeOf(root dirEntry, maxDirSize int) int {
-	panic("unimplemented")
+	sum := 0
+	dirs := findDirsWithTotalSizeOf(root, maxDirSize)
+	for _, d := range dirs {
+		sum += calculateTotalSize(d)
+	}
+
+	return sum
+}
+
+func findDirsWithTotalSizeOf(dir dirEntry, maxDirSize int) []dirEntry {
+	dirs := make([]dirEntry, 0)
+	allDirs := getDescendantDirectories(dir)
+	for _, d := range allDirs {
+		if calculateTotalSize(d) <= maxDirSize {
+			dirs = append(dirs, d)
+		}
+	}
+
+	return dirs
+}
+
+func getDescendantDirectories(root dirEntry) []dirEntry {
+	result := make([]dirEntry, 0)
+	stack := make([]dirEntry, 0)
+
+	stack = append(stack, root)
+
+	for len(stack) > 0 {
+		dir := stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+
+		result = append(result, dir)
+		stack = append(stack, getChildDirectories(dir.children)...)
+	}
+
+	return result
+}
+
+func getChildDirectories(children map[string]dirEntry) []dirEntry {
+	result := make([]dirEntry, 0)
+	for _, c := range children {
+		if c.isDirectory {
+			result = append(result, c)
+		}
+	}
+
+	return result
+}
+
+func calculateTotalSize(dir dirEntry) int {
+	size := 0
+	for _, d := range getDescendantDirectories(dir) {
+		size += getSize(d)
+	}
+
+	return size
+}
+
+func getSize(dir dirEntry) int {
+	size := 0
+	for _, c := range dir.children {
+		if !c.isDirectory {
+			size += c.size
+		}
+	}
+
+	return size
 }
 
 func splitFirst(s string, sep string) (string, string) {

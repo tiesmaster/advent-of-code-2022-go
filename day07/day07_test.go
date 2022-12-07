@@ -12,7 +12,7 @@ func TestStep01(t *testing.T) {
 		want int
 	}{
 		{TestData, 95437},
-		// {Data, 1965},
+		{Data, 1965},
 	}
 	for _, c := range cases {
 		got := Step01(c.in)
