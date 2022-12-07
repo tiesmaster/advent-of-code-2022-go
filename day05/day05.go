@@ -7,11 +7,7 @@ import (
 )
 
 func PerformRearrangementProcedure(drawing string) string {
-	parts := strings.Split(drawing, "\n\n")
-
-	state := parseStartingState(parts[0])
-	instructions := parseInstructions(parts[1])
-
+	state, instructions := parseDrawing(drawing)
 	for _, instr := range instructions {
 		executeInstruction(state, instr)
 	}
@@ -20,11 +16,7 @@ func PerformRearrangementProcedure(drawing string) string {
 }
 
 func PerformRearrangementProcedureButWithCrateMover9001(drawing string) string {
-	parts := strings.Split(drawing, "\n\n")
-
-	state := parseStartingState(parts[0])
-	instructions := parseInstructions(parts[1])
-
+	state, instructions := parseDrawing(drawing)
 	for _, instr := range instructions {
 		executeInstructionViaCrateMover9001(state, instr)
 	}
@@ -44,6 +36,14 @@ type instruction struct {
 	quantity    int
 	source      int
 	destination int
+}
+
+func parseDrawing(drawing string) (State, []instruction) {
+	parts := strings.Split(drawing, "\n\n")
+
+	state := parseStartingState(parts[0])
+	instructions := parseInstructions(parts[1])
+	return state, instructions
 }
 
 func parseStartingState(stateText string) State {
