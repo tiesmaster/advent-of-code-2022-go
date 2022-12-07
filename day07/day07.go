@@ -21,23 +21,17 @@ func parseTerminalOutput(output string) dirEntry {
 	root := dirEntry{isDirectory: true}
 	cwd := root
 
+	var first string
 	for len(output) > 0 {
-		index := strings.Index(output[1:], "$")
-		if index == -1 {
-			index = len(output)
-		}
-
-		cwd = processOutput(output[:index], root, cwd)
-		output = output[index:]
-
+		first, output = splitFirst(output, "\n$")
+		cwd = processOutput(first, root, cwd)
 	}
 
 	return root
 }
 
 func processOutput(output string, root, cwd dirEntry) dirEntry {
-	index := strings.Index(output, "\n")
-	command := output[:index]
+	command, commandOutput := splitFirst(output, "\n")
 	switch command {
 	case "$ cd /":
 		// TODO: Implement actual cd /
@@ -45,7 +39,7 @@ func processOutput(output string, root, cwd dirEntry) dirEntry {
 	case "$ cd ..":
 		return *cwd.parent
 	case "$ ls":
-		processDirListing(cwd, output[index:])
+		processDirListing(cwd, commandOutput)
 		return cwd
 	default:
 		// case "$ cd <dirname>":
@@ -71,7 +65,14 @@ func sumDirsWithTotalSizeOf(root dirEntry, maxDirSize int) int {
 	panic("unimplemented")
 }
 
-func splitFirst(s string, sep string) (string, string)
+func splitFirst(s string, sep string) (string, string) {
+	index := strings.Index(s, sep)
+	if index == -1 {
+		return s, ""
+	} else {
+		return s[:index], s[index+1:]
+	}
+}
 
 func toInt(s string) int {
 	i, _ := strconv.Atoi(s)
