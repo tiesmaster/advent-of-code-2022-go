@@ -69,53 +69,45 @@ func calculateVisibleTrees(mapData [][]int) int {
 	}
 
 	// map out visibility
-	for i := 1; i < rowCount; i++ {
-		for j := 1; j < columnCount; j++ {
+	for i := 1; i < rowCount-1; i++ {
+		for j := 1; j < columnCount-1; j++ {
 			currentTree := mapData[i][j]
+			blockingSides := 0
 
 			// x-axis search [leftside]
 			for x := 0; x < j; x++ {
-				// there is a tree that block line of sight
 				if mapData[i][x] >= currentTree {
+					blockingSides++
 					break
 				}
-
-				// nothing is blocking, so we're visible
-				visMap[i][j] = true
 			}
 
 			// x-axis search [rightside]
-			for x := j+1; x < columnCount; x++ {
-				// there is a tree that block line of sight
+			for x := j + 1; x < columnCount; x++ {
 				if mapData[i][x] >= currentTree {
+					blockingSides++
 					break
 				}
-
-				// nothing is blocking, so we're visible
-				visMap[i][j] = true
 			}
 
 			// y-axis search [topside]
-			for y := 0; y < j; y++ {
-				// there is a tree that block line of sight
+			for y := 0; y < i; y++ {
 				if mapData[y][j] >= currentTree {
+					blockingSides++
 					break
 				}
-
-				// nothing is blocking, so we're visible
-				visMap[i][j] = true
 			}
 
 			// y-axis search [bottomside]
-			for y := j+1; y < rowCount; y++ {
-				// there is a tree that block line of sight
+			for y := i + 1; y < rowCount; y++ {
 				if mapData[y][j] >= currentTree {
+					blockingSides++
 					break
 				}
-
-				// nothing is blocking, so we're visible
-				visMap[i][j] = true
 			}
+
+			visMap[i][j] = blockingSides < 4
+
 		}
 	}
 
