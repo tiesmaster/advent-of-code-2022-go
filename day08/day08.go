@@ -80,32 +80,32 @@ func calculateVisibleTrees(mapData [][]int) int {
 			blockingSides := 0
 
 			// x-axis search [leftside]
-			for x := 0; x < j; x++ {
-				if mapData[i][x] >= currentTree {
+			for J := 0; J < j; J++ {
+				if mapData[i][J] >= currentTree {
 					blockingSides++
 					break
 				}
 			}
 
 			// x-axis search [rightside]
-			for x := j + 1; x < columnCount; x++ {
-				if mapData[i][x] >= currentTree {
+			for J := j + 1; J < columnCount; J++ {
+				if mapData[i][J] >= currentTree {
 					blockingSides++
 					break
 				}
 			}
 
 			// y-axis search [topside]
-			for y := 0; y < i; y++ {
-				if mapData[y][j] >= currentTree {
+			for I := 0; I < i; I++ {
+				if mapData[I][j] >= currentTree {
 					blockingSides++
 					break
 				}
 			}
 
 			// y-axis search [bottomside]
-			for y := i + 1; y < rowCount; y++ {
-				if mapData[y][j] >= currentTree {
+			for I := i + 1; I < rowCount; I++ {
+				if mapData[I][j] >= currentTree {
 					blockingSides++
 					break
 				}
