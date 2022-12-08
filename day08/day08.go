@@ -10,6 +10,11 @@ func Step01(mapText string) int {
 	return calculateVisibleTrees(mapData)
 }
 
+func Step02(mapText string) int {
+	mapData := parseMap(mapText)
+	return calculateHighestScenicScore(mapData)
+}
+
 func parseMap(mapText string) [][]int {
 	rowCount, columnCount := readDimensions(mapText)
 	m := make([][]int, columnCount)
@@ -122,4 +127,65 @@ func calculateVisibleTrees(mapData [][]int) int {
 	}
 
 	return count
+}
+
+func calculateHighestScenicScore(mapData [][]int) int {
+	rowCount, columnCount := len(mapData[0]), len(mapData)
+
+	maxScore := 0
+
+	for i := 1; i < rowCount-1; i++ {
+		for j := 1; j < columnCount-1; j++ {
+			currentTree := mapData[i][j]
+			score := 1
+
+			// x-axis search [leftside]
+			for J := j - 1; 0 <= J; J-- {
+				if mapData[i][J] >= currentTree || J == 0 {
+					distance := j - J
+					score *= distance
+					break
+				}
+			}
+
+			// x-axis search [rightside]
+			for J := j + 1; J < columnCount; J++ {
+				if mapData[i][J] >= currentTree || J == columnCount-1 {
+					distance := J - j
+					score *= distance
+					break
+				}
+			}
+
+			// y-axis search [topside]
+			for I := i - 1; 0 <= I; I-- {
+				if mapData[I][j] >= currentTree || I == 0 {
+					distance := i - I
+					score *= distance
+					break
+				}
+			}
+
+			// y-axis search [bottomside]
+			for I := i + 1; I < rowCount; I++ {
+				if mapData[I][j] >= currentTree || I == rowCount-1 {
+					distance := I - i
+					score *= distance
+					break
+				}
+			}
+
+			maxScore = max(maxScore, score)
+		}
+	}
+
+	return maxScore
+}
+
+func max(x, y int) int {
+	if x > y {
+		return x
+	} else {
+		return y
+	}
 }
