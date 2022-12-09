@@ -81,10 +81,7 @@ func simulateMotions(motions []motion, state *State) {
 			state.head.move(motion.direction)
 
 			if !state.head.isAdjacent(state.tail) {
-				state.tail.moveTowards(state.head)
-				// then move tail to head
-				// add current tail position in previousTailPositions
-				state.allTailPositions[state.tail] = true
+				state.moveTailTowardsHead()
 			}
 		}
 	}
@@ -101,6 +98,12 @@ func (coordinate *coordinate) move(direction Direction) {
 	case up:
 		coordinate.y++
 	}
+}
+
+func (state *State) moveTailTowardsHead() {
+	state.tail.moveTowards(state.head)
+	state.allTailPositions[state.tail] = true
+
 }
 
 func (a *coordinate) moveTowards(b coordinate) {
