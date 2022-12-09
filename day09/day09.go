@@ -3,8 +3,6 @@ package day09
 import (
 	"strconv"
 	"strings"
-
-	"google.golang.org/genproto/googleapis/cloud/location"
 )
 
 func Step01(motionsText string) int {
@@ -75,5 +73,34 @@ func newState() State {
 }
 
 func simulateMotions(motions []motion, state *State) {
+
+	state.previousTailPositions[state.tail] = true
+
+	for _, motion := range motions {
+		for i := 0; i < motion.steps; i++ {
+			move(&state.head, motion.direction)
+
+			if !isAdjacent(state.head, state.tail) {
+				// then move tail to head
+				// add current tail position in previousTailPositions
+			}
+		}
+	}
+}
+
+func move(coordinate *coordinate, direction Direction) {
+	switch direction {
+	case left:
+		coordinate.x--
+	case right:
+		coordinate.x++
+	case up:
+		coordinate.y++
+	case down:
+		coordinate.y--
+	}
+}
+
+func isAdjacent(a, b coordinate) bool {
 	panic("unimplemented")
 }
