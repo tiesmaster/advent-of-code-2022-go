@@ -120,9 +120,9 @@ func simulateMotionsStep02(motions []motion, state *StateStep02) {
 			state.knots[0].move(motion.direction)
 
 			for i := 1; i < len(state.knots); i++ {
-				curKnot := state.knots[i]
+				curKnot := &state.knots[i]
 				prevKnot := state.knots[i-1]
-				if !prevKnot.isAdjacent(curKnot) {
+				if !curKnot.isAdjacent(prevKnot) {
 					curKnot.moveTowards(prevKnot)
 				}
 			}
