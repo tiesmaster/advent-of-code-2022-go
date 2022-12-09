@@ -8,14 +8,14 @@ import (
 func Step01(motionsText string) int {
 	motions := parseMotions(motionsText)
 	state := newStateStep01()
-	simulateMotions(motions, &state)
+	simulateMotionsStep01(motions, &state)
 	return len(state.allTailPositions)
 }
 
 func Step02(motionsText string) int {
 	motions := parseMotions(motionsText)
-	state := newStateStep01()
-	simulateMotions(motions, &state)
+	state := newStateStep02()
+	simulateMotionsStep02(motions, &state)
 	return len(state.allTailPositions)
 }
 
@@ -45,8 +45,7 @@ type StateStep01 struct {
 }
 
 type StateStep02 struct {
-	head             coordinate
-	tail             coordinate
+	knots            [10]coordinate
 	allTailPositions map[coordinate]bool
 }
 
@@ -88,7 +87,22 @@ func newStateStep01() StateStep01 {
 	}
 }
 
-func simulateMotions(motions []motion, state *StateStep01) {
+func newStateStep02() StateStep02 {
+	startPosition := coordinate{0, 0}
+	state := StateStep02{
+		allTailPositions: map[coordinate]bool{
+			startPosition: true,
+		},
+	}
+
+	for i := 0; i < len(state.knots); i++ {
+		state.knots[i] = startPosition
+	}
+
+	return state
+}
+
+func simulateMotionsStep01(motions []motion, state *StateStep01) {
 	for _, motion := range motions {
 		for i := 0; i < motion.steps; i++ {
 			state.head.move(motion.direction)
@@ -96,6 +110,23 @@ func simulateMotions(motions []motion, state *StateStep01) {
 			if !state.head.isAdjacent(state.tail) {
 				state.moveTailTowardsHead()
 			}
+		}
+	}
+}
+
+func simulateMotionsStep02(motions []motion, state *StateStep02) {
+	for _, motion := range motions {
+		for i := 0; i < motion.steps; i++ {
+			state.knots[0].move(motion.direction)
+
+			for i := 1; i < len(state.knots); i++ {
+				curKnot := state.knots[i]
+				prevKnot := state.knots[i-1]
+				if !prevKnot.isAdjacent(curKnot) {
+					curKnot.moveTowards(prevKnot)
+				}
+			}
+			state.allTailPositions[state.knots[9]] = true
 		}
 	}
 }
