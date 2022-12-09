@@ -81,8 +81,10 @@ func simulateMotions(motions []motion, state *State) {
 			move(&state.head, motion.direction)
 
 			if !isAdjacent(state.head, state.tail) {
+				state.tail.moveTowards(state.head)
 				// then move tail to head
 				// add current tail position in previousTailPositions
+				state.previousTailPositions[state.tail] = true
 			}
 		}
 	}
@@ -101,6 +103,39 @@ func move(coordinate *coordinate, direction Direction) {
 	}
 }
 
+func (a *coordinate) moveTowards(b coordinate) {
+	if distance(a.x, b.x) > 1 {
+		// move a.x towards b.x
+		a.x = moveTowards(a.x, b.x)
+		a.y = b.y
+	} else {
+		a.x = b.x
+		a.y = moveTowards(a.y, b.y)
+	}
+}
+
+func moveTowards(a, b int) int {
+	// a == 1, b == 3
+	//   a ==> 2
+	if a > b {
+		return a-1
+	} else {
+		return a+1
+	}
+}
+
 func isAdjacent(a, b coordinate) bool {
-	panic("unimplemented")
+	return distance(a.x, b.x) < 2 && distance(a.y, b.y) < 2
+}
+
+func distance(i, j int) int {
+	return abs(i - j)
+}
+
+func abs(x int) int {
+	if x < 0 {
+		return -1 * x
+	} else {
+		return x
+	}
 }
