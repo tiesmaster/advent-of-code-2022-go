@@ -118,9 +118,9 @@ func moveTowards(a, b int) int {
 	// a == 1, b == 3
 	//   a ==> 2
 	if a > b {
-		return a-1
+		return a - 1
 	} else {
-		return a+1
+		return a + 1
 	}
 }
 
