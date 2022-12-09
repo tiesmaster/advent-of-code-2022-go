@@ -7,7 +7,14 @@ import (
 
 func Step01(motionsText string) int {
 	motions := parseMotions(motionsText)
-	state := newState()
+	state := newStateStep01()
+	simulateMotions(motions, &state)
+	return len(state.allTailPositions)
+}
+
+func Step02(motionsText string) int {
+	motions := parseMotions(motionsText)
+	state := newStateStep01()
 	simulateMotions(motions, &state)
 	return len(state.allTailPositions)
 }
@@ -31,7 +38,13 @@ type coordinate struct {
 	y int
 }
 
-type State struct {
+type StateStep01 struct {
+	head             coordinate
+	tail             coordinate
+	allTailPositions map[coordinate]bool
+}
+
+type StateStep02 struct {
 	head             coordinate
 	tail             coordinate
 	allTailPositions map[coordinate]bool
@@ -64,9 +77,9 @@ func parseMotion(line string) motion {
 	return motion{direction, steps}
 }
 
-func newState() State {
+func newStateStep01() StateStep01 {
 	startPosition := coordinate{0, 0}
-	return State{
+	return StateStep01{
 		head: startPosition,
 		tail: startPosition,
 		allTailPositions: map[coordinate]bool{
@@ -75,7 +88,7 @@ func newState() State {
 	}
 }
 
-func simulateMotions(motions []motion, state *State) {
+func simulateMotions(motions []motion, state *StateStep01) {
 	for _, motion := range motions {
 		for i := 0; i < motion.steps; i++ {
 			state.head.move(motion.direction)
@@ -100,7 +113,7 @@ func (coordinate *coordinate) move(direction Direction) {
 	}
 }
 
-func (state *State) moveTailTowardsHead() {
+func (state *StateStep01) moveTailTowardsHead() {
 	state.tail.moveTowards(state.head)
 	state.allTailPositions[state.tail] = true
 
