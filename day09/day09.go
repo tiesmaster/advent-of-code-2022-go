@@ -9,7 +9,7 @@ func Step01(motionsText string) int {
 	motions := parseMotions(motionsText)
 	state := newState()
 	simulateMotions(motions, &state)
-	return len(state.previousTailPositions)
+	return len(state.allTailPositions)
 }
 
 type Direction int
@@ -32,9 +32,9 @@ type coordinate struct {
 }
 
 type State struct {
-	head                  coordinate
-	tail                  coordinate
-	previousTailPositions map[coordinate]bool
+	head             coordinate
+	tail             coordinate
+	allTailPositions map[coordinate]bool
 }
 
 func parseMotions(motionsText string) []motion {
@@ -65,58 +65,55 @@ func parseMotion(line string) motion {
 }
 
 func newState() State {
+	startPosition := coordinate{0, 0}
 	return State{
-		head:                  coordinate{0, 0},
-		tail:                  coordinate{0, 0},
-		previousTailPositions: make(map[coordinate]bool),
+		head: startPosition,
+		tail: startPosition,
+		allTailPositions: map[coordinate]bool{
+			startPosition: true,
+		},
 	}
 }
 
 func simulateMotions(motions []motion, state *State) {
-
-	state.previousTailPositions[state.tail] = true
-
 	for _, motion := range motions {
 		for i := 0; i < motion.steps; i++ {
-			move(&state.head, motion.direction)
+			state.head.move(motion.direction)
 
-			if !isAdjacent(state.head, state.tail) {
+			if !state.head.isAdjacent(state.tail) {
 				state.tail.moveTowards(state.head)
 				// then move tail to head
 				// add current tail position in previousTailPositions
-				state.previousTailPositions[state.tail] = true
+				state.allTailPositions[state.tail] = true
 			}
 		}
 	}
 }
 
-func move(coordinate *coordinate, direction Direction) {
+func (coordinate *coordinate) move(direction Direction) {
 	switch direction {
 	case left:
 		coordinate.x--
 	case right:
 		coordinate.x++
-	case up:
-		coordinate.y++
 	case down:
 		coordinate.y--
+	case up:
+		coordinate.y++
 	}
 }
 
 func (a *coordinate) moveTowards(b coordinate) {
 	if distance(a.x, b.x) > 1 {
-		// move a.x towards b.x
-		a.x = moveTowards(a.x, b.x)
+		a.x = calculateNewPosition(a.x, b.x)
 		a.y = b.y
 	} else {
 		a.x = b.x
-		a.y = moveTowards(a.y, b.y)
+		a.y = calculateNewPosition(a.y, b.y)
 	}
 }
 
-func moveTowards(a, b int) int {
-	// a == 1, b == 3
-	//   a ==> 2
+func calculateNewPosition(a, b int) int {
 	if a > b {
 		return a - 1
 	} else {
@@ -124,7 +121,7 @@ func moveTowards(a, b int) int {
 	}
 }
 
-func isAdjacent(a, b coordinate) bool {
+func (a *coordinate) isAdjacent(b coordinate) bool {
 	return distance(a.x, b.x) < 2 && distance(a.y, b.y) < 2
 }
 
