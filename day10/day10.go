@@ -44,6 +44,10 @@ func Step01(instructionsText string) int {
 	return sumSignalStrength
 }
 
+func Step02(instructionsText string) string {
+	panic("unimplemented")
+}
+
 type instruction struct {
 	operation operation
 	operarant int
