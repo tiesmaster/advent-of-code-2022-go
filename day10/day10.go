@@ -9,19 +9,36 @@ func Step01(instructionsText string) int {
 	instructions := parseInstructions(instructionsText)
 
 	var registerX, cycle, sumSignalStrength int
+
+	var currInstr *instruction
 	registerX = 1
-	for _, instr := range instructions {
-		switch instr.operation {
-		case addx:
-			cycle += 2
-			registerX += instr.operarant
-		case noop:
-			cycle++
-		}
+
+	for len(instructions) > 0 {
+
+		// start new cycle
+		cycle++
 
 		if cycle%40 == 20 {
 			sumSignalStrength += registerX * cycle
 		}
+
+		// fetch next instruction, if needed
+		if currInstr == nil {
+			currInstr = &instructions[0]
+			instructions = instructions[1:]
+		}
+
+		// consume cycles, by instruction
+		currInstr.cycles--
+
+		// check for completion
+		if currInstr.cycles == 0 {
+			if currInstr.operation == addx {
+				registerX += currInstr.operarant
+			}
+			currInstr = nil
+		}
+
 	}
 
 	return sumSignalStrength
@@ -30,6 +47,7 @@ func Step01(instructionsText string) int {
 type instruction struct {
 	operation operation
 	operarant int
+	cycles    int
 }
 
 type operation int
@@ -62,9 +80,16 @@ func parseLine(line string) instruction {
 
 func addxInstruction(operantText string) instruction {
 	V, _ := strconv.Atoi(operantText)
-	return instruction{operation: addx, operarant: V}
+	return instruction{
+		operation: addx,
+		operarant: V,
+		cycles: 2,
+	}
 }
 
 func noopInstruction() instruction {
-	return instruction{operation: noop}
+	return instruction{
+		operation: noop,
+		cycles: 1,
+	}
 }
