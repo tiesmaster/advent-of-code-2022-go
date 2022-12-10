@@ -8,37 +8,21 @@ import (
 func Step01(instructionsText string) int {
 	instructions := parseInstructions(instructionsText)
 
-	var registerX, cycle, sumSignalStrength int
+	var registerX, sumSignalStrength int
 
-	var currInstr *instruction
+	// var currInstr *instruction
 	registerX = 1
 
-	for len(instructions) > 0 {
+	for i, currInstr := range instructions {
 
-		// start new cycle
-		cycle++
-
+		cycle := i+1
 		if cycle%40 == 20 {
 			sumSignalStrength += registerX * cycle
 		}
 
-		// fetch next instruction, if needed
-		if currInstr == nil {
-			currInstr = &instructions[0]
-			instructions = instructions[1:]
+		if currInstr.operation == addx {
+			registerX += currInstr.operarant
 		}
-
-		// consume cycles, by instruction
-		currInstr.cycles--
-
-		// check for completion
-		if currInstr.cycles == 0 {
-			if currInstr.operation == addx {
-				registerX += currInstr.operarant
-			}
-			currInstr = nil
-		}
-
 	}
 
 	return sumSignalStrength
@@ -99,12 +83,12 @@ func parseInstructions(instructionsText string) []instruction {
 	lines := strings.Split(instructionsText, "\n")
 	instructions := make([]instruction, 0)
 	for _, line := range lines {
-		instructions = append(instructions, parseLine(line))
+		instructions = append(instructions, parseLine(line)...)
 	}
 	return instructions
 }
 
-func parseLine(line string) instruction {
+func parseLine(line string) []instruction {
 	fields := strings.Fields(line)
 	switch fields[0] {
 	case "addx":
@@ -116,19 +100,22 @@ func parseLine(line string) instruction {
 	panic("cannot reach")
 }
 
-func addxInstruction(operantText string) instruction {
+func addxInstruction(operantText string) []instruction {
 	V, _ := strconv.Atoi(operantText)
-	return instruction{
+
+	return append(noopInstruction(), instruction{
 		operation: addx,
 		operarant: V,
-		cycles:    2,
-	}
+		cycles: 1,
+	})
 }
 
-func noopInstruction() instruction {
-	return instruction{
-		operation: noop,
-		cycles:    1,
+func noopInstruction() []instruction {
+	return []instruction{
+		{
+			operation: noop,
+			cycles: 1,
+		},
 	}
 }
 
