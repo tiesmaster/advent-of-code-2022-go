@@ -13,7 +13,6 @@ D 1
 L 5
 R 2`
 
-
 var BiggerTestData = `R 5
 U 8
 L 8

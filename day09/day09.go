@@ -151,7 +151,7 @@ func (state *StateStep01) moveTailTowardsHead() {
 }
 
 func (a *coordinate) moveTowards(b coordinate) {
-	if distance(a.x, b.x) > 1 && distance(a.y, b.y) > 1{
+	if distance(a.x, b.x) > 1 && distance(a.y, b.y) > 1 {
 		a.x = calculateNewPosition(a.x, b.x)
 		a.y = calculateNewPosition(a.y, b.y)
 		return

@@ -83,13 +83,13 @@ func addxInstruction(operantText string) instruction {
 	return instruction{
 		operation: addx,
 		operarant: V,
-		cycles: 2,
+		cycles:    2,
 	}
 }
 
 func noopInstruction() instruction {
 	return instruction{
 		operation: noop,
-		cycles: 1,
+		cycles:    1,
 	}
 }
