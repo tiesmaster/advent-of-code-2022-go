@@ -156,10 +156,10 @@ func (c coordinate) spriteOverlaps(spriteCol int) bool {
 	var low, high int
 	if spriteCol < 1 {
 		low, high = 0, 2
-	}
-
-	if spriteCol > numColumns-2 {
+	} else if spriteCol > numColumns-2 {
 		low, high = 37, 39
+	} else {
+		low, high = spriteCol-1, spriteCol+1
 	}
 
 	return low <= c.col && c.col <= high
