@@ -45,7 +45,41 @@ func Step01(instructionsText string) int {
 }
 
 func Step02(instructionsText string) string {
-	panic("unimplemented")
+	instructions := parseInstructions(instructionsText)
+
+	var videoBuffer videoBuffer
+
+	var registerX, cycle int
+
+	var currInstr *instruction
+	registerX = 1
+
+	for len(instructions) > 0 {
+		// fetch next instruction, if needed
+		if currInstr == nil {
+			currInstr = &instructions[0]
+			instructions = instructions[1:]
+		}
+
+		videoBuffer.drawPixel(cycle, registerX)
+
+		// start new cycle
+		cycle++
+
+		// consume cycles, by instruction
+		currInstr.cycles--
+
+		// check for completion
+		if currInstr.cycles == 0 {
+			if currInstr.operation == addx {
+				registerX += currInstr.operarant
+			}
+			currInstr = nil
+		}
+
+	}
+
+	return videoBuffer.renderToString()
 }
 
 type instruction struct {
@@ -95,5 +129,59 @@ func noopInstruction() instruction {
 	return instruction{
 		operation: noop,
 		cycles:    1,
+	}
+}
+
+const (
+	numRows    = 6
+	numColumns = 40
+)
+
+type coordinate struct{ row, col int }
+type videoBuffer [numRows][numColumns]bool
+
+func (videoBuffer *videoBuffer) drawPixel(cycle, registerX int) {
+	c := toCoordinate(cycle)
+	videoBuffer[c.row][c.col] = c.spriteOverlaps(registerX)
+}
+
+func toCoordinate(cycle int) coordinate {
+	return coordinate{
+		row: cycle / numColumns,
+		col: cycle % numColumns,
+	}
+}
+
+func (c coordinate) spriteOverlaps(spriteCol int) bool {
+	var low, high int
+	if spriteCol < 1 {
+		low, high = 0, 2
+	}
+
+	if spriteCol > numColumns-2 {
+		low, high = 37, 39
+	}
+
+	return low <= c.col && c.col <= high
+}
+
+func (videoBuffer *videoBuffer) renderToString() string {
+	var lines [numRows]string
+	for row := 0; row < numRows; row++ {
+		var line [numColumns]byte
+		for col := 0; col < numColumns; col++ {
+			line[col] = renderPixel(videoBuffer[row][col])
+		}
+		lines[row] = string(line[:])
+	}
+
+	return strings.Join(lines[:], "\n")
+}
+
+func renderPixel(b bool) byte {
+	if b {
+		return '#'
+	} else {
+		return '.'
 	}
 }
