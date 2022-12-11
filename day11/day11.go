@@ -99,9 +99,9 @@ func parseTest(s []string) nextMonkeyDecider {
 func takeRounds(monkeys []monkey, totalRounds int, reliefLevelLowersByThreeFold bool) {
 	for round := 0; round < totalRounds; round++ {
 		for i := 0; i < len(monkeys); i++ {
-			// monkey := monkeys[i]
-			for _, worryLevel := range monkeys[i].items {
-				worryLevel := monkeys[i].worryLevelOperation(worryLevel)
+			monkey := &monkeys[i]
+			for _, worryLevel := range monkey.items {
+				worryLevel := monkey.worryLevelOperation(worryLevel)
 				if reliefLevelLowersByThreeFold {
 					worryLevel = worryLevel / 3
 				} else {
@@ -109,16 +109,16 @@ func takeRounds(monkeys []monkey, totalRounds int, reliefLevelLowersByThreeFold 
 						worryLevel = worryLevel - 4
 					}
 				}
-				if worryLevel%monkeys[i].next.testNumber == 0 {
-					destinationMonkey := &monkeys[monkeys[i].next.trueMonkey]
+				if worryLevel%monkey.next.testNumber == 0 {
+					destinationMonkey := &monkeys[monkey.next.trueMonkey]
 					destinationMonkey.items = append(destinationMonkey.items, worryLevel)
 				} else {
-					destinationMonkey := &monkeys[monkeys[i].next.falseMonkey]
+					destinationMonkey := &monkeys[monkey.next.falseMonkey]
 					destinationMonkey.items = append(destinationMonkey.items, worryLevel)
 				}
-				monkeys[i].inspectionCount++
+				monkey.inspectionCount++
 			}
-			monkeys[i].items = make([]int, 0)
+			monkey.items = make([]int, 0)
 		}
 	}
 }
