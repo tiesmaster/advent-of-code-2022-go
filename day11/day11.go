@@ -58,7 +58,25 @@ func parseItems(s string) []int {
 }
 
 func parseOperation(s string) func(int) int {
-	panic("unimplemented")
+	operationText := s[11:]
+	switch {
+	case operationText == "new = old * old":
+		return func(old int) int {
+			return old * old
+		}
+	case strings.Contains(operationText, "*"):
+		operant := toInt(operationText[12:])
+		return func(old int) int {
+			return old * operant
+		}
+	case strings.Contains(operationText, "+"):
+		operant := toInt(operationText[12:])
+		return func(old int) int {
+			return old + operant
+		}
+	}
+
+	panic("cannot reach")
 }
 
 func parseTest(s []string) nextMonkeyDecider {
