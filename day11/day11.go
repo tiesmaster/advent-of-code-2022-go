@@ -100,13 +100,14 @@ func takeRounds(monkeys []monkey, totalRounds int, reliefLevelLowersByThreeFold 
 	for round := 0; round < totalRounds; round++ {
 		for i := 0; i < len(monkeys); i++ {
 			monkey := &monkeys[i]
+			monkey.inspectionCount += len(monkey.items)
+
 			for _, worryLevel := range monkey.items {
 				worryLevel := calculateNewWorryLevel(*monkey, worryLevel)
 				destinationMonkey := &monkeys[calculateDestinationMonkey(worryLevel, monkey.next)]
 				destinationMonkey.items = append(destinationMonkey.items, worryLevel)
-
-				monkey.inspectionCount++
 			}
+
 			monkey.items = make([]int, 0)
 		}
 	}
