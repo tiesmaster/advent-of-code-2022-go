@@ -11,7 +11,7 @@ func Step01(notes string) int {
 	const reliefLevelLowersByThreeFold = true
 
 	monkeys := parseMonkeys(notes)
-	monkeys = takeRounds(monkeys, totalRounds, reliefLevelLowersByThreeFold)
+	takeRounds(monkeys, totalRounds, reliefLevelLowersByThreeFold)
 	return calculateMonkeyBusiness(monkeys)
 }
 
@@ -20,7 +20,7 @@ func Step02(notes string) int {
 	const reliefLevelLowersByThreeFold = false
 
 	monkeys := parseMonkeys(notes)
-	monkeys = takeRounds(monkeys, totalRounds, reliefLevelLowersByThreeFold)
+	takeRounds(monkeys, totalRounds, reliefLevelLowersByThreeFold)
 	return calculateMonkeyBusiness(monkeys)
 }
 
@@ -96,7 +96,7 @@ func parseTest(s []string) nextMonkeyDecider {
 	return nextMonkeyDecider{testNumber, trueMonkey, falseMonkey}
 }
 
-func takeRounds(monkeys []monkey, totalRounds int, reliefLevelLowersByThreeFold bool) []monkey {
+func takeRounds(monkeys []monkey, totalRounds int, reliefLevelLowersByThreeFold bool) {
 	for round := 0; round < totalRounds; round++ {
 		for i := 0; i < len(monkeys); i++ {
 			// monkey := monkeys[i]
@@ -121,7 +121,6 @@ func takeRounds(monkeys []monkey, totalRounds int, reliefLevelLowersByThreeFold 
 			monkeys[i].items = make([]int, 0)
 		}
 	}
-	return monkeys
 }
 
 func calculateMonkeyBusiness(monkeys []monkey) int {

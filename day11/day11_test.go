@@ -67,7 +67,7 @@ func _TestStep02Inspections(t *testing.T) {
 func Step02Inspections(rounds int) [4]int {
 	const reliefLevelLowersByThreeFold = false
 	monkeys := parseMonkeys(TestData)
-	monkeys = takeRounds(monkeys, rounds, reliefLevelLowersByThreeFold)
+	takeRounds(monkeys, rounds, reliefLevelLowersByThreeFold)
 
 	var inspections [4]int
 	for i := 0; i < 4; i++ {
