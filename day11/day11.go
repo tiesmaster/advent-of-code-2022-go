@@ -101,15 +101,7 @@ func takeRounds(monkeys []monkey, totalRounds int, reliefLevelLowersByThreeFold 
 		for i := 0; i < len(monkeys); i++ {
 			monkey := &monkeys[i]
 			for _, worryLevel := range monkey.items {
-				worryLevel := monkey.worryLevelOperation(worryLevel)
-				if reliefLevelLowersByThreeFold {
-					worryLevel = worryLevel / 3
-				} else {
-					if round > 20 {
-						worryLevel = worryLevel - 4
-					}
-				}
-
+				worryLevel := calculateNewWorryLevel(*monkey, worryLevel)
 				destinationMonkey := &monkeys[calculateDestinationMonkey(worryLevel, monkey.next)]
 				destinationMonkey.items = append(destinationMonkey.items, worryLevel)
 
@@ -118,6 +110,11 @@ func takeRounds(monkeys []monkey, totalRounds int, reliefLevelLowersByThreeFold 
 			monkey.items = make([]int, 0)
 		}
 	}
+}
+
+func calculateNewWorryLevel(monkey monkey, worryLevel int) int {
+	worryLevel = monkey.worryLevelOperation(worryLevel)
+	return worryLevel / 3
 }
 
 func calculateDestinationMonkey(worryLevel int, next nextMonkeyDecider) int {
