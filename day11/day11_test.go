@@ -11,7 +11,7 @@ func TestStep01(t *testing.T) {
 		in   string
 		want int
 	}{
-		{TestData, 666},
+		{TestData, 10605},
 		// {Data, 1543},
 	}
 	for _, c := range cases {
