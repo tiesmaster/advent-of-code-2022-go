@@ -60,7 +60,8 @@ func parseMonkey(block string) monkey {
 
 func parseItems(s string) []int {
 	items := make([]int, 0)
-	parts := strings.Split(s[18:], ", ")
+	s = eatPrefix(s)
+	parts := strings.Split(s, ", ")
 	for _, n := range parts {
 		items = append(items, toInt(n))
 	}
@@ -68,7 +69,7 @@ func parseItems(s string) []int {
 }
 
 func parseOperation(s string) func(int) int {
-	operationText := s[13:]
+	operationText := eatPrefix(s)
 	switch {
 	case operationText == "new = old * old":
 		return func(old int) int {
@@ -90,10 +91,29 @@ func parseOperation(s string) func(int) int {
 }
 
 func parseTest(s []string) nextMonkeyDecider {
-	testNumber := toInt(s[0][21:])
-	trueMonkey := toInt(s[1][29:])
-	falseMonkey := toInt(s[2][30:])
+	testNumber := parseTestNumber(s[0])
+	trueMonkey := parseDestMonkey(s[1])
+	falseMonkey := parseDestMonkey(s[2])
 	return nextMonkeyDecider{testNumber, trueMonkey, falseMonkey}
+}
+
+func parseTestNumber(s string) int {
+	s = eatPrefix(s)
+	s = strings.Fields(s)[2]
+	return toInt(s)
+}
+
+func parseDestMonkey(s string) int {
+	s = eatPrefix(s)
+	s = strings.Fields(s)[3]
+	return toInt(s)
+}
+
+func eatPrefix(s string) string {
+	prefixDelim := ": "
+	index := strings.Index(s, prefixDelim)
+	index += len(prefixDelim)
+	return s[index:]
 }
 
 func takeRounds(monkeys []monkey, totalRounds int, reliefLevelLowersByThreeFold bool) {
