@@ -15,7 +15,7 @@ func Step01(instructionsText string) int {
 
 	for i, currInstr := range instructions {
 
-		cycle := i+1
+		cycle := i + 1
 		if cycle%40 == 20 {
 			sumSignalStrength += registerX * cycle
 		}
@@ -106,7 +106,7 @@ func addxInstruction(operantText string) []instruction {
 	return append(noopInstruction(), instruction{
 		operation: addx,
 		operarant: V,
-		cycles: 1,
+		cycles:    1,
 	})
 }
 
@@ -114,7 +114,7 @@ func noopInstruction() []instruction {
 	return []instruction{
 		{
 			operation: noop,
-			cycles: 1,
+			cycles:    1,
 		},
 	}
 }
