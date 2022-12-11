@@ -51,7 +51,7 @@ func parseMonkey(block string) monkey {
 
 func parseItems(s string) []int {
 	items := make([]int, 0)
-	parts := strings.Split(s[16:], ", ")
+	parts := strings.Split(s[18:], ", ")
 	for _, n := range parts {
 		items = append(items, toInt(n))
 	}
@@ -59,7 +59,7 @@ func parseItems(s string) []int {
 }
 
 func parseOperation(s string) func(int) int {
-	operationText := s[11:]
+	operationText := s[13:]
 	switch {
 	case operationText == "new = old * old":
 		return func(old int) int {
@@ -81,9 +81,9 @@ func parseOperation(s string) func(int) int {
 }
 
 func parseTest(s []string) nextMonkeyDecider {
-	testNumber := toInt(s[0][19:])
-	trueMonkey := toInt(s[1][27:])
-	falseMonkey := toInt(s[2][28:])
+	testNumber := toInt(s[0][21:])
+	trueMonkey := toInt(s[1][29:])
+	falseMonkey := toInt(s[2][30:])
 	return nextMonkeyDecider{testNumber, trueMonkey, falseMonkey}
 }
 
