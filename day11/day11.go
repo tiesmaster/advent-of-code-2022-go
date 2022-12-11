@@ -1,7 +1,6 @@
 package day11
 
 import (
-	"fmt"
 	"sort"
 	"strconv"
 	"strings"
@@ -105,10 +104,7 @@ func takeRounds(monkeys []monkey, totalRounds int) []monkey {
 			}
 			monkeys[i].items = make([]int, 0)
 		}
-		fmt.Println("Round: ", round)
-		fmt.Println(monkeys)
-}
-
+	}
 	return monkeys
 }
 
