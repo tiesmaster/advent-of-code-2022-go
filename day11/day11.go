@@ -109,17 +109,22 @@ func takeRounds(monkeys []monkey, totalRounds int, reliefLevelLowersByThreeFold 
 						worryLevel = worryLevel - 4
 					}
 				}
-				if worryLevel%monkey.next.testNumber == 0 {
-					destinationMonkey := &monkeys[monkey.next.trueMonkey]
-					destinationMonkey.items = append(destinationMonkey.items, worryLevel)
-				} else {
-					destinationMonkey := &monkeys[monkey.next.falseMonkey]
-					destinationMonkey.items = append(destinationMonkey.items, worryLevel)
-				}
+
+				destinationMonkey := &monkeys[calculateDestinationMonkey(worryLevel, monkey.next)]
+				destinationMonkey.items = append(destinationMonkey.items, worryLevel)
+
 				monkey.inspectionCount++
 			}
 			monkey.items = make([]int, 0)
 		}
+	}
+}
+
+func calculateDestinationMonkey(worryLevel int, next nextMonkeyDecider) int {
+	if worryLevel%next.testNumber == 0 {
+		return next.trueMonkey
+	} else {
+		return next.falseMonkey
 	}
 }
 
