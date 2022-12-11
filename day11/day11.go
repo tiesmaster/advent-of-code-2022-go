@@ -45,7 +45,6 @@ func parseMonkey(block string) monkey {
 		worryLevelOperation: worryLevelOperation,
 		next:                next,
 	}
-
 }
 
 func parseItems(s string) []int {
@@ -80,7 +79,10 @@ func parseOperation(s string) func(int) int {
 }
 
 func parseTest(s []string) nextMonkeyDecider {
-	panic("unimplemented")
+	testNumber := toInt(s[0][20:])
+	trueMonkey := toInt(s[1][27:])
+	falseMonkey := toInt(s[2][28:])
+	return nextMonkeyDecider{testNumber, trueMonkey, falseMonkey}
 }
 
 func takeRounds(monkeys *[]monkey, i int) {
