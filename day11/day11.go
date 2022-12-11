@@ -6,11 +6,21 @@ import (
 	"strings"
 )
 
-const totalRounds = 20
-
 func Step01(notes string) int {
+	const totalRounds = 20
+	const reliefLevelLowersByThreeFold = true
+
 	monkeys := parseMonkeys(notes)
-	monkeys = takeRounds(monkeys, totalRounds)
+	monkeys = takeRounds(monkeys, totalRounds, reliefLevelLowersByThreeFold)
+	return calculateMonkeyBusiness(monkeys)
+}
+
+func Step02(notes string) int {
+	const totalRounds = 10_000
+	const reliefLevelLowersByThreeFold = false
+
+	monkeys := parseMonkeys(notes)
+	monkeys = takeRounds(monkeys, totalRounds, reliefLevelLowersByThreeFold)
 	return calculateMonkeyBusiness(monkeys)
 }
 
@@ -86,13 +96,15 @@ func parseTest(s []string) nextMonkeyDecider {
 	return nextMonkeyDecider{testNumber, trueMonkey, falseMonkey}
 }
 
-func takeRounds(monkeys []monkey, totalRounds int) []monkey {
+func takeRounds(monkeys []monkey, totalRounds int, reliefLevelLowersByThreeFold bool) []monkey {
 	for round := 0; round < totalRounds; round++ {
 		for i := 0; i < len(monkeys); i++ {
 			// monkey := monkeys[i]
 			for _, worryLevel := range monkeys[i].items {
 				worryLevel := monkeys[i].worryLevelOperation(worryLevel)
-				worryLevel = worryLevel / 3
+				if reliefLevelLowersByThreeFold {
+					worryLevel = worryLevel / 3
+				}
 				if worryLevel%monkeys[i].next.testNumber == 0 {
 					destinationMonkey := &monkeys[monkeys[i].next.trueMonkey]
 					destinationMonkey.items = append(destinationMonkey.items, worryLevel)
