@@ -1,6 +1,8 @@
 package day11
 
 import (
+	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -9,7 +11,7 @@ const totalRounds = 20
 
 func Step01(notes string) int {
 	monkeys := parseMonkeys(notes)
-	takeRounds(&monkeys, totalRounds)
+	monkeys = takeRounds(monkeys, totalRounds)
 	return calculateMonkeyBusiness(monkeys)
 }
 
@@ -79,18 +81,47 @@ func parseOperation(s string) func(int) int {
 }
 
 func parseTest(s []string) nextMonkeyDecider {
-	testNumber := toInt(s[0][20:])
+	testNumber := toInt(s[0][19:])
 	trueMonkey := toInt(s[1][27:])
 	falseMonkey := toInt(s[2][28:])
 	return nextMonkeyDecider{testNumber, trueMonkey, falseMonkey}
 }
 
-func takeRounds(monkeys *[]monkey, i int) {
-	panic("unimplemented")
+func takeRounds(monkeys []monkey, totalRounds int) []monkey {
+	for round := 0; round < totalRounds; round++ {
+		for i := 0; i < len(monkeys); i++ {
+			// monkey := monkeys[i]
+			for _, worryLevel := range monkeys[i].items {
+				worryLevel := monkeys[i].worryLevelOperation(worryLevel)
+				worryLevel = worryLevel / 3
+				if worryLevel%monkeys[i].next.testNumber == 0 {
+					destinationMonkey := &monkeys[monkeys[i].next.trueMonkey]
+					destinationMonkey.items = append(destinationMonkey.items, worryLevel)
+				} else {
+					destinationMonkey := &monkeys[monkeys[i].next.falseMonkey]
+					destinationMonkey.items = append(destinationMonkey.items, worryLevel)
+				}
+				monkeys[i].inspectionCount++
+			}
+			monkeys[i].items = make([]int, 0)
+		}
+		fmt.Println("Round: ", round)
+		fmt.Println(monkeys)
+}
+
+	return monkeys
 }
 
 func calculateMonkeyBusiness(monkeys []monkey) int {
-	panic("unimplemented")
+	inspectionCounts := make([]int, len(monkeys))
+	for i, monkey := range monkeys {
+		inspectionCounts[i] = monkey.inspectionCount
+	}
+	sort.Slice(inspectionCounts, func(i, j int) bool {
+		return inspectionCounts[i] > inspectionCounts[j]
+	})
+
+	return inspectionCounts[0] * inspectionCounts[1]
 }
 
 func toInt(s string) int {
