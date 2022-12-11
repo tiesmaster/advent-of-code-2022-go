@@ -104,6 +104,10 @@ func takeRounds(monkeys []monkey, totalRounds int, reliefLevelLowersByThreeFold 
 				worryLevel := monkeys[i].worryLevelOperation(worryLevel)
 				if reliefLevelLowersByThreeFold {
 					worryLevel = worryLevel / 3
+				} else {
+					if round > 20 {
+						worryLevel = worryLevel - 4
+					}
 				}
 				if worryLevel%monkeys[i].next.testNumber == 0 {
 					destinationMonkey := &monkeys[monkeys[i].next.trueMonkey]

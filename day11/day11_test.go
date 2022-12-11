@@ -22,7 +22,7 @@ func TestStep01(t *testing.T) {
 	}
 }
 
-func TestStep02(t *testing.T) {
+func _TestStep02(t *testing.T) {
 	cases := []struct {
 		in   string
 		want int
@@ -38,7 +38,7 @@ func TestStep02(t *testing.T) {
 	}
 }
 
-func TestStep02Inspections(t *testing.T) {
+func _TestStep02Inspections(t *testing.T) {
 	cases := []struct {
 		in   int
 		want [4]int
