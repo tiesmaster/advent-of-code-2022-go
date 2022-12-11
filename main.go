@@ -3,22 +3,17 @@ package main
 import "fmt"
 
 func main() {
-	var buffer videoBuffer
+	var hoi [4]int
+	hoi[0] = 0
+	hoi[1] = 1
+	hoi[2] = 2
+	hoi[3] = 3
 
-	// buffer[0][1] = 123
-	row, col := 1, 2
-	drawPixel(&buffer, row, col)
-
-	fmt.Println(buffer)
+	fmt.Println(hoi)
+	doStuff(&hoi)
+	fmt.Println(hoi)
 }
 
-const (
-	numRows    = 6
-	numColumns = 40
-)
-
-type videoBuffer [numRows][numColumns]int
-
-func drawPixel(buffer *videoBuffer, row, col int) {
-	buffer[row][col] = 123
+func doStuff(hoi *[4]int) {
+	hoi[0] = 3
 }
