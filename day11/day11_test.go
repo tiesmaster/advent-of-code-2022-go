@@ -1,19 +1,3 @@
-#!/bin/bash
-
-mkdir day11
-cd day11
-
-# touch day11{,_test}.go data.go data.txt
-
-cat <<EOF >day11.go
-package day11
-
-func Step01(data string) int {
-	panic("unimplemented")
-}
-EOF
-
-cat <<EOF >day11_test.go
 package day11
 
 import (
@@ -37,21 +21,3 @@ func TestStep01(t *testing.T) {
 		}
 	}
 }
-EOF
-
-cat <<EOF >data.go
-package day11
-
-import (
-	_ "embed"
-)
-
-var TestData = \`\`
-
-//go:embed data.txt
-var Data string
-EOF
-
-cat <<EOF >data.txt
-Hello day11
-EOF
