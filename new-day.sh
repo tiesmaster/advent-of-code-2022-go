@@ -1,20 +1,20 @@
 #!/bin/bash
 
-mkdir day11
-cd day11
+DAY_NUM=$1
 
-# touch day11{,_test}.go data.go data.txt
+mkdir day${DAY_NUM}
+cd day${DAY_NUM}
 
-cat <<EOF >day11.go
-package day11
+cat <<EOF >day${DAY_NUM}.go
+package day${DAY_NUM}
 
 func Step01(data string) int {
 	panic("unimplemented")
 }
 EOF
 
-cat <<EOF >day11_test.go
-package day11
+cat <<EOF >day${DAY_NUM}_test.go
+package day${DAY_NUM}
 
 import (
 	"testing"
@@ -40,7 +40,7 @@ func TestStep01(t *testing.T) {
 EOF
 
 cat <<EOF >data.go
-package day11
+package day${DAY_NUM}
 
 import (
 	_ "embed"
@@ -53,5 +53,5 @@ var Data string
 EOF
 
 cat <<EOF >data.txt
-Hello day11
+Hello day${DAY_NUM}
 EOF
