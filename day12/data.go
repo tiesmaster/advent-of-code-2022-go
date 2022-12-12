@@ -4,7 +4,11 @@ import (
 	_ "embed"
 )
 
-var TestData = ``
+var TestData = `Sabqponm
+abcryxxl
+accszExk
+acctuvwj
+abdefghi`
 
 //go:embed data.txt
 var Data string
