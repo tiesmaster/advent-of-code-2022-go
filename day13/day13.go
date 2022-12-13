@@ -35,15 +35,23 @@ func indicesRightOrder(pairs []pair) []int {
 	return indices
 }
 
-
 func compare(left, right string) int {
 	switch {
 	case isInt(left[0]) && isInt(right[0]):
 		l, r := toInt(left), toInt(right)
 		return compareInt(l, r)
+	case left[0] == '[' && right[0] == '[':
+		l := strings.Split(left[1:len(left)-1], ",")
+		r := strings.Split(right[1:len(right)-1], ",")
+		return compareLists(l, r)
+	// mixed types
+	case left[0] == '[':
+		panic("unimplemented")
+	default:
+		panic("unimplemented")
 		// case: both integer
-		// x, y := 
-		
+		// x, y :=
+
 	}
 
 	panic("unimplemented")
@@ -60,11 +68,27 @@ func compareInt(left, right int) int {
 	}
 }
 
+func compareLists(l, r []string) int {
+	m := min(len(l), len(r))
+	for i := 0; i < m; i++ {
+		c := compare(l[i], r[i])
+		
+		// comparision is conclusive, return the result
+		if c == -1 || c == 1 {
+			return c
+		}
+
+		// items are the same, continue with the next item
+	}
+
+	panic("shouldn't reach")
+}
+
 func isInt(b byte) bool {
 	return unicode.IsDigit(rune(b))
 }
 
-func sum(indices []int) int{
+func sum(indices []int) int {
 	sum := 0
 	for _, index := range indices {
 		sum += index
@@ -75,4 +99,12 @@ func sum(indices []int) int{
 func toInt(s string) int {
 	i, _ := strconv.Atoi(s)
 	return i
+}
+
+func min(x, y int) int {
+	if x < y {
+		return x
+	} else {
+		return y
+	}
 }
