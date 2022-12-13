@@ -1,6 +1,7 @@
 package day13
 
 import (
+	"strconv"
 	"strings"
 	"unicode"
 )
@@ -27,7 +28,7 @@ func parseSignal(distressSignal string) []pair {
 func indicesRightOrder(pairs []pair) []int {
 	indices := make([]int, 0)
 	for index, pair := range pairs {
-		if compare(pair[0], pair[1]) == 1 {
+		if compare(pair[0], pair[1]) == -1 {
 			indices = append(indices, index)
 		}
 	}
@@ -38,12 +39,25 @@ func indicesRightOrder(pairs []pair) []int {
 func compare(left, right string) int {
 	switch {
 	case isInt(left[0]) && isInt(right[0]):
+		l, r := toInt(left), toInt(right)
+		return compareInt(l, r)
 		// case: both integer
 		// x, y := 
 		
 	}
 
 	panic("unimplemented")
+}
+
+func compareInt(left, right int) int {
+	switch {
+	case left == right:
+		return 0
+	case left < right:
+		return -1
+	default:
+		return 1
+	}
 }
 
 func isInt(b byte) bool {
@@ -56,4 +70,9 @@ func sum(indices []int) int{
 		sum += index
 	}
 	return sum
+}
+
+func toInt(s string) int {
+	i, _ := strconv.Atoi(s)
+	return i
 }

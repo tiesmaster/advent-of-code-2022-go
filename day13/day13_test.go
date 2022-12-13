@@ -21,3 +21,22 @@ func TestStep01(t *testing.T) {
 		}
 	}
 }
+
+func TestCompare(t *testing.T) {
+	cases := []struct {
+		in   [2]string
+		want int
+	}{
+		{[2]string{"1", "2"}, -1},
+		{[2]string{"1", "1"}, 0},
+		{[2]string{"2", "1"}, 1},
+		{[2]string{"123", "456"}, -1},
+		// {Data, 1543},
+	}
+	for _, c := range cases {
+		got := compare(c.in[0], c.in[1])
+		if got != c.want {
+			t.Errorf("compare(%v, %v) == %v, want %v", c.in[0], c.in[1], got, c.want)
+		}
+	}
+}
