@@ -95,19 +95,16 @@ func splitList(s string) []string {
 	openBracesCount := 0
 	v := ""
 	for _, r := range s[1:] {
-		// only parse, if not within other list
-		if openBracesCount == 0 {
+		if openBracesCount > 0 {
 			switch r {
 			case '[':
 				openBracesCount++
 			case ']':
-				if openBracesCount == 0 {
-					list = append(list, v)
-					v = ""
-				} else {
-					openBracesCount--
-				}
-			case ',':
+				openBracesCount--
+			}
+		} else {
+			switch {
+			case r == ',' || r == ']':
 				list = append(list, v)
 				v = ""
 			default:
@@ -115,7 +112,6 @@ func splitList(s string) []string {
 			}
 		}
 	}
-
 	return list
 }
 

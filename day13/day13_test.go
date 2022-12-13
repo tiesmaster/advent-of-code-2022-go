@@ -55,6 +55,7 @@ func TestSplitList(t *testing.T) {
 		{"[]", make([]string, 0)},
 		{"[1]", []string{"1"}},
 		{"[1,2,3]", []string{"1", "2", "3"}},
+		{"[[1],[2,3,4]]", []string{"[1]", "[2,3,4]"}},
 	}
 	for _, c := range cases {
 		got := splitList(c.in)
