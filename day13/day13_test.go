@@ -1,6 +1,7 @@
 package day13
 
 import (
+	"fmt"
 	"testing"
 
 	testhelpers "github.com/tiesmaster/advent-of-code-2022-go/testHelpers"
@@ -42,6 +43,23 @@ func TestCompare(t *testing.T) {
 		got := compare(c.in[0], c.in[1])
 		if got != c.want {
 			t.Errorf("compare(%v, %v) == %v, want %v", c.in[0], c.in[1], got, c.want)
+		}
+	}
+}
+
+func TestSplitList(t *testing.T) {
+	cases := []struct {
+		in   string
+		want []string
+	}{
+		{"[]", make([]string, 0)},
+		{"[1]", []string{"1"}},
+		{"[1,2,3]", []string{"1", "2", "3"}},
+	}
+	for _, c := range cases {
+		got := splitList(c.in)
+		if fmt.Sprint(got) != fmt.Sprint(c.want) {
+			t.Errorf("splitList(%v) == %v, want %v", c.in, got, c.want)
 		}
 	}
 }

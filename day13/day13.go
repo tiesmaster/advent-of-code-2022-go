@@ -41,8 +41,8 @@ func compare(left, right string) int {
 		l, r := toInt(left), toInt(right)
 		return compareInt(l, r)
 	case left[0] == '[' && right[0] == '[':
-		l := strings.Split(left[1:len(left)-1], ",")
-		r := strings.Split(right[1:len(right)-1], ",")
+		l := splitList(left)
+		r := splitList(right)
 		return compareLists(l, r)
 	// mixed types
 	case left[0] == '[':
@@ -72,7 +72,7 @@ func compareLists(left, right []string) int {
 	m := min(len(left), len(right))
 	for i := 0; i < m; i++ {
 		c := compare(left[i], right[i])
-		
+
 		// comparision is conclusive, return the result
 		if c == -1 || c == 1 {
 			return c
@@ -88,6 +88,35 @@ func compareLists(left, right []string) int {
 	default:
 		return 1
 	}
+}
+
+func splitList(s string) []string {
+	list := make([]string, 0)
+	openBracesCount := 0
+	v := ""
+	for _, r := range s[1:] {
+		// only parse, if not within other list
+		if openBracesCount == 0 {
+			switch r {
+			case '[':
+				openBracesCount++
+			case ']':
+				if openBracesCount == 0 {
+					list = append(list, v)
+					v = ""
+				} else {
+					openBracesCount--
+				}
+			case ',':
+				list = append(list, v)
+				v = ""
+			default:
+				v += string(r)
+			}
+		}
+	}
+
+	return list
 }
 
 func isInt(b byte) bool {

@@ -1,5 +1,9 @@
 package main
 
+import "fmt"
+
 func main() {
-	// fmt.Println(day12.Dis())
+	l := []string{"1", "2", "3"}
+	s := fmt.Sprint(l)
+	fmt.Println(s)
 }
