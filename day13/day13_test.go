@@ -23,6 +23,22 @@ func TestStep01(t *testing.T) {
 	}
 }
 
+func TestStep02(t *testing.T) {
+	cases := []struct {
+		in   string
+		want int
+	}{
+		{TestData, 140},
+		// {Data, 5557},
+	}
+	for _, c := range cases {
+		got := Step02(c.in)
+		if got != c.want {
+			t.Errorf("Step02(%v) == %v, want %v", testhelpers.TrimInput(c.in), got, c.want)
+		}
+	}
+}
+
 func TestCompare(t *testing.T) {
 	cases := []struct {
 		in   [2]string

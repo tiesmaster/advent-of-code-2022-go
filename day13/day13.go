@@ -12,6 +12,10 @@ func Step01(distressSignal string) int {
 	return sum(indices)
 }
 
+func Step02(distressSignal string) int {
+	panic("unimplemented")
+}
+
 type pair [2]string
 
 func parseSignal(distressSignal string) []pair {
