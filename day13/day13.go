@@ -17,28 +17,22 @@ func Step01(distressSignal string) int {
 func Step02(distressSignal string) int {
 	packets := flatten(parseSignal(distressSignal))
 	sortPackets(packets)
-	dividerPacket1 := "[[2]]"
-	dividerPacket2 := "[[6]]"
 
-	var index1, index2 int
-	for i, p := range packets {
-		if compare(dividerPacket1, p) == -1 {
-			index1 = i + 1
+	dividerPackets := [2]string{"[[2]]", "[[6]]"}
+
+	var indices [2]int
+
+	for i, dp := range dividerPackets {
+
+		// BLS
+		for j, p := range packets {
+			if compare(dp, p) == -1 {
+				indices[i] = j + 1 + i
+				break
+			}
 		}
-
-		if compare(dividerPacket2, p) == -1 {
-			index2 = i + 2
-		}
-
 	}
-	// printPackets(packets)
-	return index1 * index2
-}
-
-func printPackets(packets []string) {
-	for _, p := range packets {
-		fmt.Println(p)
-	}
+	return indices[0] * indices[1]
 }
 
 type pair [2]string
