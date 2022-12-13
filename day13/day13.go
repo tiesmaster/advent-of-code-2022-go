@@ -1,7 +1,6 @@
 package day13
 
 import (
-	"fmt"
 	"sort"
 	"strconv"
 	"strings"
@@ -18,21 +17,17 @@ func Step02(distressSignal string) int {
 	packets := flatten(parseSignal(distressSignal))
 	sortPackets(packets)
 
-	dividerPackets := [2]string{"[[2]]", "[[6]]"}
+	index1 := search(packets, "[[2]]") + 1
+	index2 := search(packets, "[[6]]") + 2
+	
+	return index1 * index2
+}
 
-	var indices [2]int
-
-	for i, dp := range dividerPackets {
-
-		// BLS
-		for j, p := range packets {
-			if compare(dp, p) == -1 {
-				indices[i] = j + 1 + i
-				break
-			}
-		}
-	}
-	return indices[0] * indices[1]
+func search(packets []string, packet string) int {
+	index, _ := sort.Find(len(packets), func(i int) int {
+		return compare(packet, packets[i])
+	})
+	return index
 }
 
 type pair [2]string
