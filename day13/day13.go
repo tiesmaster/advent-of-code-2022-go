@@ -29,7 +29,7 @@ func indicesRightOrder(pairs []pair) []int {
 	indices := make([]int, 0)
 	for index, pair := range pairs {
 		if compare(pair[0], pair[1]) == -1 {
-			indices = append(indices, index)
+			indices = append(indices, index+1)
 		}
 	}
 	return indices
