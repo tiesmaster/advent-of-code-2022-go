@@ -13,15 +13,15 @@ func Step01(gridData string) int {
 	// do the algorithm
 	panic("unimplemented")
 
-	path := make([]coordinate, 0)
-	current := start
-	for current != end {
-		options := possibleNextSteps(grid, current)
-		current = bestStep(options, end)
-		path = append(path, current)
-	}
+	// path := make([]coordinate, 0)
+	// current := start
+	// for current != end {
+	// 	options := possibleNextSteps(grid, current)
+	// 	current = bestStep(options, end)
+	// 	path = append(path, current)
+	// }
 
-	return len(path)
+	// return len(path)
 }
 
 type coordinate struct{ x, y int }
@@ -80,13 +80,14 @@ func distance(a, b coordinate) float64 {
 }
 
 func possibleNextSteps(grid [][]int, position coordinate) []coordinate {
-	nextSteps := make([]coordinate, 0)
+	panic("unimplemented")
+	// nextSteps := make([]coordinate, 0)
 
 	// left: x - 1, y
 	// top:
 	// right
 	// bottom
-	if grid[coordinate.x-1][coordinate.y] {
+	// if grid[coordinate.x-1][coordinate.y] {
 
-	}
+	// }
 }
