@@ -105,8 +105,10 @@ func splitList(s string) []string {
 			v += string(r)
 			openBracesCount--
 		case openBracesCount == 0 && r == ',' || r == ']':
-			list = append(list, v)
-			v = ""
+			if v != "" {
+				list = append(list, v)
+				v = ""
+			}
 		default:
 			v += string(r)
 		}
