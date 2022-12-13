@@ -94,22 +94,20 @@ func splitList(s string) []string {
 	list := make([]string, 0)
 	openBracesCount := 0
 	v := ""
+
 	for _, r := range s[1:] {
-		if openBracesCount > 0 {
-			switch r {
-			case '[':
-				openBracesCount++
-			case ']':
-				openBracesCount--
-			}
-		} else {
-			switch {
-			case r == ',' || r == ']':
-				list = append(list, v)
-				v = ""
-			default:
-				v += string(r)
-			}
+		switch {
+		case r == '[':
+			v += string(r)
+			openBracesCount++
+		case openBracesCount > 0 && r == ']':
+			v += string(r)
+			openBracesCount--
+		case openBracesCount == 0 && r == ',' || r == ']':
+			list = append(list, v)
+			v = ""
+		default:
+			v += string(r)
 		}
 	}
 	return list
