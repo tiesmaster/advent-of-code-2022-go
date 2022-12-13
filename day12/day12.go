@@ -2,6 +2,7 @@ package day12
 
 import (
 	"fmt"
+	"math"
 	"strings"
 )
 
@@ -11,6 +12,16 @@ func Step01(gridData string) int {
 	fmt.Println(grid, start, end)
 	// do the algorithm
 	panic("unimplemented")
+
+	path := make([]coordinate, 0)
+	current := start
+	for current != end {
+		options := possibleNextSteps(grid, current)
+		current = bestStep(options, end)
+		path = append(path, current)
+	}
+
+	return len(path)
 }
 
 type coordinate struct{ x, y int }
@@ -59,4 +70,23 @@ func readGrid(gridData string, grid [][]int) (start, end coordinate) {
 		}
 	}
 	return
+}
+
+func distance(a, b coordinate) float64 {
+
+	v := math.Pow(float64(a.x-b.x), 2)
+	w := math.Pow(float64(a.y-b.y), 2)
+	return math.Abs(math.Sqrt(v + w))
+}
+
+func possibleNextSteps(grid [][]int, position coordinate) []coordinate {
+	nextSteps := make([]coordinate, 0)
+
+	// left: x - 1, y
+	// top:
+	// right
+	// bottom
+	if grid[coordinate.x-1][coordinate.y] {
+
+	}
 }
