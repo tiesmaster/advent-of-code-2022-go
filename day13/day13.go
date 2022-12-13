@@ -46,15 +46,16 @@ func compare(left, right string) int {
 		return compareLists(l, r)
 	// mixed types
 	case left[0] == '[':
-		panic("unimplemented")
+		r := makeList(right)
+		return compare(left, r)
 	default:
-		panic("unimplemented")
-		// case: both integer
-		// x, y :=
-
+		l := makeList(left)
+		return compare(l, right)
 	}
+}
 
-	panic("unimplemented")
+func makeList(left string) string {
+	return "[" + left + "]"
 }
 
 func compareInt(left, right int) int {
