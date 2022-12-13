@@ -1,6 +1,8 @@
 package day13
 
 import (
+	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 	"unicode"
@@ -13,7 +15,30 @@ func Step01(distressSignal string) int {
 }
 
 func Step02(distressSignal string) int {
-	panic("unimplemented")
+	packets := flatten(parseSignal(distressSignal))
+	sortPackets(packets)
+	dividerPacket1 := "[[2]]"
+	dividerPacket2 := "[[6]]"
+
+	var index1, index2 int
+	for i, p := range packets {
+		if compare(dividerPacket1, p) == -1 {
+			index1 = i + 1
+		}
+
+		if compare(dividerPacket2, p) == -1 {
+			index2 = i + 2
+		}
+
+	}
+	// printPackets(packets)
+	return index1 * index2
+}
+
+func printPackets(packets []string) {
+	for _, p := range packets {
+		fmt.Println(p)
+	}
 }
 
 type pair [2]string
@@ -143,4 +168,19 @@ func min(x, y int) int {
 	} else {
 		return y
 	}
+}
+
+func flatten(pairs []pair) []string {
+	x := make([]string, 2*len(pairs))
+	for i, p := range pairs {
+		x[2*i] = p[0]
+		x[2*i+1] = p[1]
+	}
+	return x
+}
+
+func sortPackets(packets []string) {
+	sort.Slice(packets, func(i, j int) bool {
+		return compare(packets[i], packets[j]) == -1
+	})
 }
