@@ -68,10 +68,10 @@ func compareInt(left, right int) int {
 	}
 }
 
-func compareLists(l, r []string) int {
-	m := min(len(l), len(r))
+func compareLists(left, right []string) int {
+	m := min(len(left), len(right))
 	for i := 0; i < m; i++ {
-		c := compare(l[i], r[i])
+		c := compare(left[i], right[i])
 		
 		// comparision is conclusive, return the result
 		if c == -1 || c == 1 {
@@ -80,8 +80,14 @@ func compareLists(l, r []string) int {
 
 		// items are the same, continue with the next item
 	}
-
-	panic("shouldn't reach")
+	switch {
+	case len(left) < len(right):
+		return -1
+	case len(left) == len(right):
+		return 0
+	default:
+		return 1
+	}
 }
 
 func isInt(b byte) bool {
