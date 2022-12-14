@@ -19,7 +19,7 @@ func Step02(distressSignal string) int {
 
 	index1 := search(packets, "[[2]]") + 1
 	index2 := search(packets, "[[6]]") + 2
-	
+
 	return index1 * index2
 }
 
