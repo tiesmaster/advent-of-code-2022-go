@@ -3,10 +3,11 @@ package main
 import "fmt"
 
 func main() {
-	l := []string{"1", "2", "3"}
-	s := fmt.Sprint(l)
-	fmt.Println("[" + s + "]")
-
-	s1 := ""
-	fmt.Println(len(s1))
+	A, B := 2, 3
+	toplevel := make([][]bool, A)
+	for i := 0; i < A; i++ {
+		toplevel[i] = make([]bool, B)
+	}
+	toplevel[1][2] = true
+	fmt.Println(toplevel)
 }
