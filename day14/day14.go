@@ -58,8 +58,54 @@ func makeGrid(bb boundingBox) grid {
 	return grid{bitmap, bb}
 }
 
+type state int
+
+const (
+	falling     state = 1
+	rest        state = 2
+	endlessVoid state = 3
+)
+
 func simulateFalling(grid grid, startingCoord coordinate) int {
-	panic("unimplemented")
+	var countRest int
+	fallingSand := startingCoord
+	var done bool
+	for !done {
+		state, nextCoord := next(grid, fallingSand)
+		switch state {
+		case falling:
+			fallingSand = nextCoord
+		case rest:
+			grid.bitmap[fallingSand.x][fallingSand.y] = true
+			countRest++
+			fallingSand = startingCoord
+			// restart the process
+		case endlessVoid:
+			done = true
+		}
+	}
+	return countRest
+}
+
+func next(grid grid, c coordinate) (state, coordinate) {
+	nextMoves := []coordinate{c.moveDown(), c.moveLeft(), c.moveRight()}
+	for _, move := range nextMoves {
+		switch {
+		case grid.outOfBounds(move):
+			return endlessVoid, c
+		case grid.canMove(move):
+			return falling, move
+		}
+	}
+	return rest, c
+}
+
+func (g grid) canMove(c coordinate) bool {
+	return !g.bitmap[c.x][c.y]
+}
+
+func (g grid) outOfBounds(c coordinate) bool {
+	return !g.bb.within(c)
 }
 
 func getBoundingBox(paths []path) boundingBox {
@@ -74,13 +120,10 @@ func (a boundingBox) union(b boundingBox) boundingBox {
 	return boundingBox{a.leftBottom.min(b.leftBottom), a.rightTop.max(b.rightTop)}
 }
 
-// func (a boundingBox) unionCoord(b coordinate) boundingBox {
-// 	return a.union(b.boundingBox())
-// }
-
-// func (a coordinate) unionCoord(b coordinate) boundingBox {
-// 	return boundingBox{a.min(b), a.max(b)}
-// }
+func (a boundingBox) within(c coordinate) bool {
+	return a.leftBottom.x <= c.x && c.x <= a.rightTop.x &&
+		a.leftBottom.y <= c.y && c.y <= a.rightTop.y
+}
 
 func (p path) boundingBox() boundingBox {
 	bb := p[0].boundingBox()
@@ -92,6 +135,18 @@ func (p path) boundingBox() boundingBox {
 
 func (a coordinate) boundingBox() boundingBox {
 	return boundingBox{a, a}
+}
+
+func (a coordinate) moveDown() coordinate {
+	return coordinate{a.x, a.y + 1}
+}
+
+func (a coordinate) moveLeft() coordinate {
+	return coordinate{a.x - 1, a.y + 1}
+}
+
+func (a coordinate) moveRight() coordinate {
+	return coordinate{a.x + 1, a.y + 1}
 }
 
 func (a coordinate) min(b coordinate) coordinate {
