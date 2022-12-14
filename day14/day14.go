@@ -25,7 +25,7 @@ func Step02(scan string) int {
 	groundFloor := gridBoundingBox.rightTop.moveDown().moveDown()
 
 	leftBottom := coordinate{0, gridBoundingBox.leftBottom.y}
-	rightBottom := coordinate{gridBoundingBox.rightTop.x + 100, gridBoundingBox.rightTop.y + 2}
+	rightBottom := coordinate{gridBoundingBox.rightTop.x + 500, gridBoundingBox.rightTop.y + 2}
 	gridBoundingBox = boundingBox{leftBottom, rightBottom}
 
 	grid := makeGrid(gridBoundingBox)
@@ -194,7 +194,7 @@ func simulateFallingStep2(grid grid, startingCoord coordinate) int {
 				fallingSand = startingCoord
 			}
 		case endlessVoid:
-			panic("shouldn't happen")
+			panic(fmt.Sprintf("shouldn't happen %v", nextCoord))
 		}
 	}
 	return countRest
