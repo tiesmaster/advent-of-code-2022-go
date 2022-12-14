@@ -29,7 +29,7 @@ func Step02(scan string) int {
 	grid.drawGround(groundFloor)
 
 	printGrid(grid)
-	return simulateFalling(grid, startingCoord)
+	return simulateFallingStep2(grid, startingCoord)
 }
 
 func (grid grid) drawPaths(paths []path) {
@@ -164,6 +164,32 @@ func simulateFalling(grid grid, startingCoord coordinate) int {
 			// restart the process
 		case endlessVoid:
 			done = true
+		}
+	}
+	return countRest
+}
+
+func simulateFallingStep2(grid grid, startingCoord coordinate) int {
+	var countRest int
+	fallingSand := startingCoord
+	var done bool
+	for !done {
+		state, nextCoord := next(grid, fallingSand)
+		switch state {
+		case falling:
+			fallingSand = nextCoord
+		case rest:
+			if fallingSand == startingCoord {
+				done = true
+			} else {
+				grid.bitmap[fallingSand.x][fallingSand.y] = true
+				countRest++
+				fallingSand = startingCoord
+				// restart the process
+			}
+		case endlessVoid:
+			// no op
+			// panic("shouldn't happen")
 		}
 	}
 	return countRest
