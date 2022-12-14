@@ -189,12 +189,12 @@ func simulateFallingStep2(grid grid, startingCoord coordinate) int {
 			} else {
 				grid.bitmap[fallingSand.x][fallingSand.y] = true
 				countRest++
-				fallingSand = startingCoord
+
 				// restart the process
+				fallingSand = startingCoord
 			}
 		case endlessVoid:
-			// no op
-			// panic("shouldn't happen")
+			panic("shouldn't happen")
 		}
 	}
 	return countRest
