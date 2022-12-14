@@ -23,7 +23,11 @@ func Step02(scan string) int {
 
 	gridBoundingBox := getBoundingBox(paths).union(startingCoord.boundingBox())
 	groundFloor := gridBoundingBox.rightTop.moveDown().moveDown()
-	gridBoundingBox = gridBoundingBox.union(groundFloor.boundingBox())
+
+	leftBottom := coordinate{0, gridBoundingBox.leftBottom.y}
+	rightBottom := coordinate{gridBoundingBox.rightTop.x + 100, gridBoundingBox.rightTop.y + 2}
+	gridBoundingBox = boundingBox{leftBottom, rightBottom}
+
 	grid := makeGrid(gridBoundingBox)
 	grid.drawPaths(paths)
 	grid.drawGround(groundFloor)
@@ -180,6 +184,7 @@ func simulateFallingStep2(grid grid, startingCoord coordinate) int {
 			fallingSand = nextCoord
 		case rest:
 			if fallingSand == startingCoord {
+				countRest++
 				done = true
 			} else {
 				grid.bitmap[fallingSand.x][fallingSand.y] = true
