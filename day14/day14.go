@@ -51,9 +51,13 @@ func parseCoordinate(s string) coordinate {
 
 func makeGrid(bb boundingBox) grid {
 	maxCoord := bb.rightTop
-	bitmap := make([][]bool, maxCoord.x)
-	for X := 0; X < maxCoord.x; X++ {
-		bitmap[X] = make([]bool, maxCoord.y)
+
+	maxX := maxCoord.x + 1
+	maxY := maxCoord.y + 1
+
+	bitmap := make([][]bool, maxX)
+	for X := 0; X < maxX; X++ {
+		bitmap[X] = make([]bool, maxY)
 	}
 	return grid{bitmap, bb}
 }
