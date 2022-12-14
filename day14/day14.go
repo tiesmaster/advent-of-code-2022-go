@@ -13,6 +13,21 @@ func Step01(scan string) int {
 	gridBoundingBox := getBoundingBox(paths).union(startingCoord.boundingBox())
 	grid := makeGrid(gridBoundingBox)
 	grid.drawPaths(paths)
+	// printGrid(grid)
+	return simulateFalling(grid, startingCoord)
+}
+
+func Step02(scan string) int {
+	paths := parseScan(scan)
+	startingCoord := coordinate{500, 0}
+
+	gridBoundingBox := getBoundingBox(paths).union(startingCoord.boundingBox())
+	groundFloor := gridBoundingBox.rightTop.moveDown().moveDown()
+	gridBoundingBox = gridBoundingBox.union(groundFloor.boundingBox())
+	grid := makeGrid(gridBoundingBox)
+	grid.drawPaths(paths)
+	grid.drawGround(groundFloor)
+
 	printGrid(grid)
 	return simulateFalling(grid, startingCoord)
 }
@@ -31,20 +46,27 @@ func (grid grid) drawPath(path path) {
 
 func (grid grid) drawLine(line Line) {
 	line = normalize(line)
-	fmt.Println("Drawing line: ", line)
+	// fmt.Println("Drawing line: ", line)
 	switch {
 	case line[0].y == line[1].y:
-		// vertical line
+		// horizontal line
 		y := line[0].y
 		for x := line[0].x; x < line[1].x+1; x++ {
 			grid.bitmap[x][y] = true
 		}
 	case line[0].x == line[1].x:
-		// horizontal line
+		// vertical line
 		x := line[0].x
 		for y := line[0].y; y < line[1].y+1; y++ {
 			grid.bitmap[x][y] = true
 		}
+	}
+}
+
+func (grid grid) drawGround(ground coordinate) {
+	y := ground.y
+	for x := grid.bb.leftBottom.x; x < grid.bb.rightTop.x+1; x++ {
+		grid.bitmap[x][y] = true
 	}
 }
 
@@ -57,8 +79,8 @@ func normalize(line Line) Line {
 }
 
 func printGrid(grid grid) {
-	for i := grid.bb.leftBottom.x; i < grid.bb.rightTop.x; i++ {
-		for j := grid.bb.leftBottom.y; j < grid.bb.rightTop.y; j++ {
+	for j := grid.bb.leftBottom.y; j < grid.bb.rightTop.y+1; j++ {
+		for i := grid.bb.leftBottom.x; i < grid.bb.rightTop.x+1; i++ {
 			if grid.bitmap[i][j] {
 				fmt.Print("#")
 			} else {
