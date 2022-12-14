@@ -31,17 +31,18 @@ func (grid grid) drawPath(path path) {
 
 func (grid grid) drawLine(line Line) {
 	line = normalize(line)
+	fmt.Println("Drawing line: ", line)
 	switch {
 	case line[0].y == line[1].y:
 		// vertical line
 		y := line[0].y
-		for x := line[0].x; x < line[1].x; x++ {
+		for x := line[0].x; x < line[1].x+1; x++ {
 			grid.bitmap[x][y] = true
 		}
 	case line[0].x == line[1].x:
 		// horizontal line
 		x := line[0].x
-		for y := line[0].y; y < line[1].y; y++ {
+		for y := line[0].y; y < line[1].y+1; y++ {
 			grid.bitmap[x][y] = true
 		}
 	}
