@@ -1,6 +1,7 @@
 package day14
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -11,7 +12,60 @@ func Step01(scan string) int {
 
 	gridBoundingBox := getBoundingBox(paths).union(startingCoord.boundingBox())
 	grid := makeGrid(gridBoundingBox)
+	grid.drawPaths(paths)
+	printGrid(grid)
 	return simulateFalling(grid, startingCoord)
+}
+
+func (grid grid) drawPaths(paths []path) {
+	for _, p := range paths {
+		grid.drawPath(p)
+	}
+}
+
+func (grid grid) drawPath(path path) {
+	for i := 0; i < len(path)-1; i++ {
+		grid.drawLine(Line{path[i], path[i+1]})
+	}
+}
+
+func (grid grid) drawLine(line Line) {
+	line = normalize(line)
+	switch {
+	case line[0].y == line[1].y:
+		// vertical line
+		y := line[0].y
+		for x := line[0].x; x < line[1].x; x++ {
+			grid.bitmap[x][y] = true
+		}
+	case line[0].x == line[1].x:
+		// horizontal line
+		x := line[0].x
+		for y := line[0].y; y < line[1].y; y++ {
+			grid.bitmap[x][y] = true
+		}
+	}
+}
+
+func normalize(line Line) Line {
+	if line[0].x < line[1].x || line[0].y < line[1].y {
+		return line
+	} else {
+		return Line{line[1], line[0]}
+	}
+}
+
+func printGrid(grid grid) {
+	for i := grid.bb.leftBottom.x; i < grid.bb.rightTop.x; i++ {
+		for j := grid.bb.leftBottom.y; j < grid.bb.rightTop.y; j++ {
+			if grid.bitmap[i][j] {
+				fmt.Print("#")
+			} else {
+				fmt.Print(".")
+			}
+		}
+		fmt.Println()
+	}
 }
 
 type grid struct {
@@ -20,6 +74,7 @@ type grid struct {
 }
 
 type path []coordinate
+type Line [2]coordinate
 type coordinate struct{ x, y int }
 type boundingBox struct {
 	leftBottom coordinate
