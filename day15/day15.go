@@ -62,10 +62,10 @@ func calculateOccupiedPositions(readings []reading, targetRow int) int {
 	bb := getBoundingBox(coordinates).unionCoverages(coverages)
 	start, end := bb.leftBottom.x, bb.rightTop.x
 	offset := -1 * start
-	bitmap := make([]bool, end-start)
+	bitmap := make([]bool, end-start+1)
 
 	for _, c := range coverages {
-		for i := c.start; i < c.end+1; i++ {
+		for i := c.start; i <= c.end; i++ {
 			bitmap[i+offset] = true
 		}
 	}
@@ -77,7 +77,7 @@ func calculateOccupiedPositions(readings []reading, targetRow int) int {
 			count++
 		}
 	}
-	return count
+	return count-1
 }
 
 func calculateCoverage(reading reading, targetRow int) (bool, rowCoverage) {
