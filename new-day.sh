@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DAY_NUM=$1
+DAY_NUM=${1:-$(date +%d)}
 
 mkdir day${DAY_NUM}
 cd day${DAY_NUM}
